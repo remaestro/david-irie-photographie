@@ -8,11 +8,11 @@ function App() {
   const observerRef = useRef(null)
 
   const slides = [
-    { title: "DAVID IRIE PHOTOGRAPHIE", subtitle: "Amour, PASSION, créativité.", buttonText: "Plus d'infos", image: "/images/slide1.jpg" },
-    { title: "PRÉVOIR L'INSTANT, LE FIGER", subtitle: "NOUVELLE PLAQUETTE 2025 - 2027", buttonText: "Plus d'infos", image: "/images/slide2.jpg" },
-    { title: "CALENDRIER WEDDING", subtitle: "2026", buttonText: "Cliquez ici", image: "/images/slide3.jpg" },
-    { title: "LA QUALITÉ AVANT LE PRIX", subtitle: "Créativité & authenticité", buttonText: "Découvrir", image: "/images/slide4.jpg" },
-    { title: "PORTRAITS & LIFESTYLE", subtitle: "Capturer votre essence", buttonText: "En savoir plus", image: "/images/slide5.jpg" }
+    { title: "DAVID IRIE PHOTOGRAPHIE", subtitle: "Amour, PASSION, créativité.", buttonText: "Plus d'infos", image: `${import.meta.env.BASE_URL}images/slide1.jpg` },
+    { title: "PRÉVOIR L'INSTANT, LE FIGER", subtitle: "NOUVELLE PLAQUETTE 2025 - 2027", buttonText: "Plus d'infos", image: `${import.meta.env.BASE_URL}images/slide2.jpg` },
+    { title: "CALENDRIER WEDDING", subtitle: "2026", buttonText: "Cliquez ici", image: `${import.meta.env.BASE_URL}images/slide3.jpg` },
+    { title: "LA QUALITÉ AVANT LE PRIX", subtitle: "Créativité & authenticité", buttonText: "Découvrir", image: `${import.meta.env.BASE_URL}images/slide4.jpg` },
+    { title: "PORTRAITS & LIFESTYLE", subtitle: "Capturer votre essence", buttonText: "En savoir plus", image: `${import.meta.env.BASE_URL}images/slide5.jpg` }
   ]
 
   useEffect(() => {
@@ -188,7 +188,7 @@ function App() {
               muted
               playsInline
             >
-              <source src="/images/video1.mp4" type="video/mp4" />
+              <source src={`${import.meta.env.BASE_URL}images/video1.mp4`} type="video/mp4" />
             </video>
             <div className="video-overlay-content">
               <h3 className="video-overlay-title">MOMENTS PRÉCIEUX</h3>
