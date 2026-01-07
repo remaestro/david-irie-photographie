@@ -23,7 +23,7 @@
   pointer-events: none;
 }
 
-.header-content > * {
+.header-content > *:not(.hamburger-btn):not(.nav) {
   pointer-events: all;
 }
 
@@ -86,6 +86,8 @@
   cursor: pointer;
   padding: 10px;
   z-index: 101;
+  pointer-events: all;
+  position: relative;
 }
 
 .hamburger-btn span {
@@ -803,9 +805,10 @@
   /* Show hamburger button on mobile */
   .hamburger-btn {
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
+    z-index: 101;
   }
 
   /* Hide navigation by default on mobile */
@@ -824,6 +827,7 @@
     z-index: 100;
     overflow-y: auto;
     align-items: flex-start;
+    pointer-events: all;
   }
 
   /* Show navigation when menu is open */
