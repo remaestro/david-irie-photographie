@@ -1,0 +1,894 @@
+.app {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Header avec Slider - Exactement comme KAMINASHOOT */
+.header-with-slider {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.header-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.header-content > * {
+  pointer-events: all;
+}
+
+.header-content .logo {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-content .nav-link {
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-content .nav-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Header - Exactement comme KAMINASHOOT */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.header-spacer {
+  height: 100px;
+  width: 100%;
+}
+
+.header-spacer-small {
+  height: 50px;
+  width: 100%;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  position: relative;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #4a4a4a;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-link:hover {
+  color: #1a1a1a;
+}
+
+/* Dropdown Navigation */
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(42, 42, 42, 0.1);
+  padding: 1rem 0;
+  min-width: 200px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: #4a4a4a;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+}
+
+/* Hero Section - Exactement comme KAMINASHOOT */
+.hero {
+  padding: 8rem 2rem;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-content {
+  max-width: 900px;
+  text-align: center;
+}
+
+.mission-statement {
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  line-height: 2.2;
+  font-weight: 300;
+  color: #2a2a2a;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* Hero Slider - 4 slides plein écran comme KAMINASHOOT */
+.hero-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-slides {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.hero-slide-bg {
+  width: 100%;
+  height: 100%;
+  background-color: #d0d0d0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-slide-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.hero-slide-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 25;
+  max-width: 900px;
+  padding: 0 2rem;
+  pointer-events: none;
+}
+
+.hero-slide-content > * {
+  pointer-events: all;
+}
+
+.hero-slide-title {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
+  text-transform: uppercase;
+}
+
+.hero-slide-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 2rem 0;
+  text-transform: uppercase;
+}
+
+.hero-slide-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.hero-slide-button:hover {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+.hero-slide-counter {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  display: flex;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: #ffffff;
+  z-index: 15;
+}
+
+.hero-prev,
+.hero-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 15;
+  padding: 1rem;
+  transition: opacity 0.3s ease;
+}
+
+.hero-prev:hover,
+.hero-next:hover {
+  opacity: 0.7;
+}
+
+.hero-prev {
+  left: 2rem;
+}
+
+.hero-next {
+  right: 2rem;
+}
+
+/* Mission Section */
+.mission-section {
+  padding: 6rem 2rem;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.mission-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.mission-statement {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  line-height: 2;
+  font-weight: 300;
+  color: #2a2a2a;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* Video Banner */
+.video-banner-section {
+  padding: 0;
+  background-color: #fafafa;
+}
+
+.video-banner {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.video-player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+}
+
+.video-overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  max-width: 800px;
+  padding: 0 2rem;
+  pointer-events: none;
+}
+
+.video-overlay-title {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.video-overlay-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Tarifs Button Section */
+.tarifs-button-section {
+  padding: 4rem 2rem 1rem;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.tarifs-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  background-color: transparent;
+  border: 1px solid #1a1a1a;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.tarifs-button:hover {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* Social Section */
+.social-section {
+  padding: 4rem 2rem;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.social-links {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-link {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: #4a4a4a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: #1a1a1a;
+}
+
+/* Instagram Feed */
+.instagram-feed {
+  position: relative;
+  background-color: #fafafa;
+  padding: 0;
+}
+
+.instagram-photos {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+}
+
+.instagram-photo {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.instagram-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.instagram-feed:hover .instagram-photo-placeholder {
+  opacity: 0.7;
+}
+
+.instagram-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  pointer-events: none;
+}
+
+.instagram-feed:hover .instagram-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: all;
+}
+
+.instagram-overlay-content {
+  color: #ffffff;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.instagram-feed:hover .instagram-overlay-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.instagram-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.instagram-overlay-content h3 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.5rem 0;
+}
+
+.instagram-overlay-content p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+.photo-slider-section {
+  padding: 3rem 0;
+  background-color: #fafafa;
+  overflow: hidden;
+}
+
+.photo-slider {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.photo-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.slider-photo-item {
+  flex: 0 0 400px;
+  height: 500px;
+}
+
+.slider-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #e8e8e8;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.slider-photo-item:hover .slider-photo-placeholder {
+  transform: scale(1.02);
+}
+
+/* Work Section - Exactement comme KAMINASHOOT */
+.work-section {
+  padding: 6rem 0 4rem;
+  text-align: center;
+  background-color: #fafafa;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: #1a1a1a;
+  margin: 0 0 4rem 0;
+}
+
+/* Feature Single - UNE grande photo pleine largeur */
+.feature-single {
+  position: relative;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 3rem;
+}
+
+.feature-single.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feature-single-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.feature-single:hover .feature-single-image {
+  transform: scale(1.02);
+}
+
+.feature-single-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 3rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  color: #ffffff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.feature-single-title {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.feature-single-subtitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-single-arrow {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-top: 0.5rem;
+}
+
+.placeholder-text {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: #9a9a9a;
+  text-transform: uppercase;
+}
+
+/* Bouton "Voir plus" */
+.work-button-wrapper {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.work-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  background-color: transparent;
+  border: 1px solid #1a1a1a;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.work-button:hover {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* About Section */
+.about-section {
+  padding: 6rem 2rem;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.about-content {
+  max-width: 800px;
+  text-align: center;
+}
+
+.about-text {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 2;
+  font-weight: 300;
+  color: #2a2a2a;
+  letter-spacing: 0.02em;
+  margin: 1.5rem 0;
+}
+
+/* Contact Section */
+.contact-section {
+  padding: 6rem 2rem;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.section-title-large {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: #1a1a1a;
+  margin: 0 0 4rem 0;
+}
+
+.contact-features {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #2a2a2a;
+  text-transform: uppercase;
+}
+
+/* Footer */
+.footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  background-color: #fafafa;
+  border-top: 1px solid rgba(42, 42, 42, 0.1);
+}
+
+.footer p {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: #6a6a6a;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-slide-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-slide-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-prev,
+  .hero-next {
+    font-size: 2rem;
+    padding: 0.5rem;
+  }
+
+  .hero-prev {
+    left: 1rem;
+  }
+
+  .hero-next {
+    right: 1rem;
+  }
+
+  .mission-statement {
+    font-size: 1.1rem;
+  }
+
+  .video-play-button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .slider-photo-item {
+    flex: 0 0 300px;
+    height: 400px;
+  }
+
+  .feature-single-image {
+    aspect-ratio: 4/3;
+  }
+
+  .feature-single-content {
+    padding: 2rem;
+  }
+
+  .feature-single-title {
+    font-size: 2rem;
+  }
+
+  .instagram-photos {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .header-spacer {
+    height: 60px;
+  }
+
+  .header-spacer-small {
+    height: 30px;
+  }
+
+  .logo {
+    font-size: 1.4rem;
+    letter-spacing: 0.25em;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+  }
+
+  .dropdown-menu {
+    position: static;
+    transform: none;
+    margin-top: 0.5rem;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+  }
+
+  .hero {
+    padding: 5rem 1.5rem;
+  }
+
+  .mission-statement {
+    font-size: 1.2rem;
+    line-height: 2;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .section-title-large {
+    font-size: 2rem;
+  }
+
+  .contact-features {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .work-button {
+    padding: 0.875rem 2rem;
+    font-size: 0.8rem;
+  }
+  
+  .feature-single-arrow {
+    font-size: 1.5rem;
+  }
+}

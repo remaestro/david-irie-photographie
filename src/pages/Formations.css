@@ -1,0 +1,252 @@
+/* Formations Page */
+.formations-page {
+  min-height: 100vh;
+  background-color: #fafafa;
+}
+
+/* Hero Section */
+.formations-hero {
+  height: 60vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+              url('/images/slide3.jpg') center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formations-hero-content {
+  text-align: center;
+  color: #ffffff;
+}
+
+.formations-hero-title {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.formations-hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Introduction */
+.formations-intro {
+  padding: 6rem 2rem;
+  background-color: #ffffff;
+}
+
+.formations-intro-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.formations-intro-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: #1a1a1a;
+  margin: 0 0 2rem 0;
+}
+
+.formations-intro-text {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.9;
+  font-weight: 300;
+  color: #4a4a4a;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* Formations List */
+.formations-list {
+  padding: 4rem 2rem 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 3rem;
+}
+
+.formation-card {
+  background-color: #ffffff;
+  padding: 3rem;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.formation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.formation-header {
+  margin-bottom: 1.5rem;
+}
+
+.formation-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #1a1a1a;
+  margin: 0 0 1rem 0;
+}
+
+.formation-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.formation-duration,
+.formation-level {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #4a4a4a;
+  text-transform: uppercase;
+}
+
+.formation-description {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  font-weight: 300;
+  color: #4a4a4a;
+  margin: 0 0 1.5rem 0;
+}
+
+.formation-points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.formation-points li {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: #4a4a4a;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  position: relative;
+}
+
+.formation-points li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #1a1a1a;
+}
+
+.formation-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.formation-price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #1a1a1a;
+}
+
+.formation-button {
+  display: inline-block;
+  padding: 0.9rem 2rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #1a1a1a;
+  border: 1px solid #1a1a1a;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.formation-button:hover {
+  background-color: transparent;
+  color: #1a1a1a;
+}
+
+/* CTA Section */
+.formations-cta {
+  padding: 6rem 2rem;
+  background-color: #1a1a1a;
+  text-align: center;
+}
+
+.formations-cta-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
+}
+
+.formations-cta-text {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 2.5rem 0;
+}
+
+.formations-cta-button {
+  display: inline-block;
+  padding: 1.2rem 3rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.formations-cta-button:hover {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formations-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .formations-list {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .formation-card {
+    padding: 2rem;
+  }
+
+  .formations-cta-title {
+    font-size: 2rem;
+  }
+}
