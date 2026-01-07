@@ -101,6 +101,14 @@ function App() {
             <span></span>
           </button>
 
+          {/* Mobile Menu Backdrop */}
+          {mobileMenuOpen && (
+            <div 
+              className="menu-backdrop" 
+              onClick={() => setMobileMenuOpen(false)}
+            ></div>
+          )}
+
           <nav className={`nav ${mobileMenuOpen ? 'nav-open' : ''}`}>
             <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Accueil</Link>
             <a href="#about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>À Propos</a>
