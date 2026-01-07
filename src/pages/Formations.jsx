@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Formations.css'
 import heroImage from '../assets/images/slide3.jpg'
 
@@ -100,7 +101,7 @@ function Formations() {
             </ul>
             <div className="formation-footer">
               <span className="formation-price">{formation.price}</span>
-              <a href="/#/contact" className="formation-button">Réserver</a>
+              <Link to="/contact" className="formation-button">Réserver</Link>
             </div>
           </div>
         ))}
@@ -110,7 +111,7 @@ function Formations() {
       <section className="formations-cta">
         <h2 className="formations-cta-title">Prêt à commencer ?</h2>
         <p className="formations-cta-text">Contactez-moi pour discuter de vos besoins et réserver votre formation</p>
-        <a href="/#/contact" className="formations-cta-button">Prendre rendez-vous</a>
+        <Link to="/contact" className="formations-cta-button">Prendre rendez-vous</Link>
       </section>
     </div>
   )

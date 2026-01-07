@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -88,7 +89,7 @@ function App() {
           <h1 className="logo">DAVID IRIE</h1>
           <div className="header-spacer-small"></div>
           <nav className="nav">
-            <a href="/" className="nav-link">Accueil</a>
+            <Link to="/" className="nav-link">Accueil</Link>
             <a href="#about" className="nav-link">À Propos</a>
             
             {/* Portfolio Dropdown */}
@@ -149,9 +150,9 @@ function App() {
               )}
             </div>
 
-            <a href="/#/formations" className="nav-link">Formations</a>
+            <Link to="/formations" className="nav-link">Formations</Link>
             <a href="#galeries" className="nav-link">Galeries privées</a>
-            <a href="/#/contact" className="nav-link">Contact</a>
+            <Link to="/contact" className="nav-link">Contact</Link>
           </nav>
           <div className="header-spacer"></div>
         </div>
