@@ -775,6 +775,11 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .header-content {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+    padding-bottom: 2rem;
+  }
+
   .hero-slide-title {
     font-size: 2.5rem;
   }
@@ -829,24 +834,47 @@
   }
 
   .header-spacer {
-    height: 60px;
+    height: 40px;
   }
 
   .header-spacer-small {
-    height: 30px;
+    height: 20px;
   }
 
   .logo {
-    font-size: 1.4rem;
-    letter-spacing: 0.25em;
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
   }
 
   .nav {
-    flex-direction: column;
-    gap: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
     padding: 0 1rem;
-    text-align: center;
+    justify-content: center;
+    max-width: 100%;
   }
+
+  .nav-link {
+    font-size: 0.75rem;
+    padding: 0.3rem;
+  }
+
+  .dropdown-menu {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 300px;
+  }
+
+  .video-overlay-title {
+    font-size: 2rem;
+  }
+
+  .video-overlay-subtitle {
+    font-size: 1rem;
+  }
+}
 
   .nav-link {
     font-size: 0.8rem;
