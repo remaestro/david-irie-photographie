@@ -149,9 +149,9 @@ function App() {
               )}
             </div>
 
-            <a href="/formations" className="nav-link">Formations</a>
+            <a href="/#/formations" className="nav-link">Formations</a>
             <a href="#galeries" className="nav-link">Galeries privées</a>
-            <a href="/contact" className="nav-link">Contact</a>
+            <a href="/#/contact" className="nav-link">Contact</a>
           </nav>
           <div className="header-spacer"></div>
         </div>
