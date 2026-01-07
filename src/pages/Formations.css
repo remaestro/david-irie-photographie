@@ -25,7 +25,7 @@
   font-weight: 300;
   letter-spacing: 0.2em;
   margin: 0 0 1rem 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7);
 }
 
 .formations-hero-subtitle {
@@ -34,7 +34,7 @@
   font-weight: 300;
   letter-spacing: 0.1em;
   margin: 0;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* Introduction */
@@ -207,6 +207,7 @@
   font-size: 1.1rem;
   font-weight: 300;
   letter-spacing: 0.05em;
+  line-height: 1.8;
   color: rgba(255, 255, 255, 0.85);
   margin: 0 0 2.5rem 0;
 }
