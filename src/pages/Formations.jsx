@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Formations.css'
+import heroImage from '../assets/images/slide3.jpg'
 
 function Formations() {
   const formations = [
@@ -60,7 +61,7 @@ function Formations() {
   return (
     <div className="formations-page">
       {/* Hero Section */}
-      <section className="formations-hero">
+      <section className="formations-hero" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImage})` }}>
         <div className="formations-hero-content">
           <h1 className="formations-hero-title">FORMATIONS</h1>
           <p className="formations-hero-subtitle">Développez vos compétences photographiques</p>

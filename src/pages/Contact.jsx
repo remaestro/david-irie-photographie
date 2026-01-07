@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Contact.css'
+import heroImage from '../assets/images/slide2.jpg'
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ function Contact() {
   return (
     <div className="contact-page">
       {/* Hero Section */}
-      <section className="contact-hero">
+      <section className="contact-hero" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImage})` }}>
         <div className="contact-hero-content">
           <h1 className="contact-hero-title">CONTACT</h1>
           <p className="contact-hero-subtitle">Parlons de votre projet</p>

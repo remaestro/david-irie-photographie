@@ -7,8 +7,8 @@
 /* Hero Section */
 .contact-hero {
   height: 50vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-              url('../../assets/images/slide2.jpg') center/cover;
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
