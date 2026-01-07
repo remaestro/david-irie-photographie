@@ -6,6 +6,7 @@ function App() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const [visibleImages, setVisibleImages] = useState(new Set())
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const observerRef = useRef(null)
 
   const slides = [
@@ -88,9 +89,21 @@ function App() {
           <div className="header-spacer"></div>
           <h1 className="logo">DAVID IRIE</h1>
           <div className="header-spacer-small"></div>
-          <nav className="nav">
-            <Link to="/" className="nav-link">Accueil</Link>
-            <a href="#about" className="nav-link">À Propos</a>
+          
+          {/* Hamburger Button - Mobile only */}
+          <button 
+            className="hamburger-btn" 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav className={`nav ${mobileMenuOpen ? 'nav-open' : ''}`}>
+            <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Accueil</Link>
+            <a href="#about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>À Propos</a>
             
             {/* Portfolio Dropdown */}
             <div className="nav-dropdown">
@@ -102,12 +115,12 @@ function App() {
               </button>
               {activeDropdown === 'portfolio' && (
                 <div className="dropdown-menu">
-                  <a href="#mariage">Mariage</a>
-                  <a href="#couple">Couple shoot</a>
-                  <a href="#evenements">Événements</a>
-                  <a href="#shooting-strobist">Shooting strobist</a>
-                  <a href="#shooting-exterieur">Shooting extérieur</a>
-                  <a href="#shooting-studio">Shooting studio</a>
+                  <a href="#mariage" onClick={() => setMobileMenuOpen(false)}>Mariage</a>
+                  <a href="#couple" onClick={() => setMobileMenuOpen(false)}>Couple shoot</a>
+                  <a href="#evenements" onClick={() => setMobileMenuOpen(false)}>Événements</a>
+                  <a href="#shooting-strobist" onClick={() => setMobileMenuOpen(false)}>Shooting strobist</a>
+                  <a href="#shooting-exterieur" onClick={() => setMobileMenuOpen(false)}>Shooting extérieur</a>
+                  <a href="#shooting-studio" onClick={() => setMobileMenuOpen(false)}>Shooting studio</a>
                 </div>
               )}
             </div>
@@ -122,11 +135,11 @@ function App() {
               </button>
               {activeDropdown === 'videos' && (
                 <div className="dropdown-menu">
-                  <a href="#teaser-mariage">Teaser mariage</a>
-                  <a href="#pre-wedding">Pré-wedding</a>
-                  <a href="#demande-mariage">Demande en mariage</a>
-                  <a href="#lifestyle">Lifestyle</a>
-                  <a href="#pub">Spots publicitaire</a>
+                  <a href="#teaser-mariage" onClick={() => setMobileMenuOpen(false)}>Teaser mariage</a>
+                  <a href="#pre-wedding" onClick={() => setMobileMenuOpen(false)}>Pré-wedding</a>
+                  <a href="#demande-mariage" onClick={() => setMobileMenuOpen(false)}>Demande en mariage</a>
+                  <a href="#lifestyle" onClick={() => setMobileMenuOpen(false)}>Lifestyle</a>
+                  <a href="#pub" onClick={() => setMobileMenuOpen(false)}>Spots publicitaire</a>
                 </div>
               )}
             </div>
@@ -141,18 +154,18 @@ function App() {
               </button>
               {activeDropdown === 'tarifs' && (
                 <div className="dropdown-menu">
-                  <a href="#mariage-photo-video">Mariage photo/vidéo</a>
-                  <a href="#mariage-photo">Mariage Photo</a>
-                  <a href="#mariage-video">Mariage Vidéo</a>
-                  <a href="#shooting-ext">Shooting extérieur</a>
-                  <a href="#shooting-stu">Shooting Studio</a>
+                  <a href="#mariage-photo-video" onClick={() => setMobileMenuOpen(false)}>Mariage photo/vidéo</a>
+                  <a href="#mariage-photo" onClick={() => setMobileMenuOpen(false)}>Mariage Photo</a>
+                  <a href="#mariage-video" onClick={() => setMobileMenuOpen(false)}>Mariage Vidéo</a>
+                  <a href="#shooting-ext" onClick={() => setMobileMenuOpen(false)}>Shooting extérieur</a>
+                  <a href="#shooting-stu" onClick={() => setMobileMenuOpen(false)}>Shooting Studio</a>
                 </div>
               )}
             </div>
 
-            <Link to="/formations" className="nav-link">Formations</Link>
-            <a href="#galeries" className="nav-link">Galeries privées</a>
-            <Link to="/contact" className="nav-link">Contact</Link>
+            <Link to="/formations" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Formations</Link>
+            <a href="#galeries" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Galeries privées</a>
+            <Link to="/contact" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           </nav>
           <div className="header-spacer"></div>
         </div>

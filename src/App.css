@@ -76,6 +76,26 @@
   position: relative;
 }
 
+/* Hamburger Menu Button - Hidden on desktop */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 30;
+}
+
+.hamburger-btn span {
+  width: 25px;
+  height: 2px;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 .nav-link {
   font-family: var(--font-body);
   font-size: 0.875rem;
@@ -780,6 +800,64 @@
     padding-bottom: 2rem;
   }
 
+  /* Show hamburger button on mobile */
+  .hamburger-btn {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  /* Hide navigation by default on mobile */
+  .nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: rgba(26, 26, 26, 0.98);
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 100px 2rem 2rem;
+    transition: right 0.3s ease;
+    z-index: 25;
+    overflow-y: auto;
+    align-items: flex-start;
+  }
+
+  /* Show navigation when menu is open */
+  .nav.nav-open {
+    right: 0;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    color: #ffffff;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static;
+    transform: none;
+    margin-top: 0.5rem;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dropdown-menu a {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dropdown-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
   .hero-slide-title {
     font-size: 2.5rem;
   }
@@ -844,27 +922,6 @@
   .logo {
     font-size: 1.2rem;
     letter-spacing: 0.2em;
-  }
-
-  .nav {
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 0 1rem;
-    justify-content: center;
-    max-width: 100%;
-  }
-
-  .nav-link {
-    font-size: 0.75rem;
-    padding: 0.3rem;
-  }
-
-  .dropdown-menu {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 300px;
   }
 
   .video-overlay-title {
