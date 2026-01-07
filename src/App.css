@@ -808,7 +808,20 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 101;
+    z-index: 150;
+  }
+
+  /* Menu backdrop */
+  .menu-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 120;
+    pointer-events: all;
   }
 
   /* Hide navigation by default on mobile */
@@ -824,7 +837,7 @@
     gap: 1.5rem;
     padding: 100px 2rem 2rem;
     transition: right 0.3s ease;
-    z-index: 100;
+    z-index: 140;
     overflow-y: auto;
     align-items: flex-start;
     pointer-events: all;
