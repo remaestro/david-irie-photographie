@@ -1,0 +1,57 @@
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
+const s3Client = new S3Client({
+  endpoint: process.env.B2_ENDPOINT,
+  region: process.env.B2_REGION || 'us-west-004',
+  credentials: {
+    accessKeyId: process.env.B2_KEY_ID,
+    secretAccessKey: process.env.B2_APPLICATION_KEY,
+  },
+});
+
+exports.uploadToBackblaze = async (req, res) => {
+  // Enable CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    return res.status(204).send('');
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { file, fileName, galleryId, contentType } = req.body;
+
+    if (!file || !fileName || !galleryId) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Decode base64 file
+    const buffer = Buffer.from(file.split(',')[1], 'base64');
+
+    const key = `galeries/${galleryId}/${Date.now()}-${fileName}`;
+
+    const command = new PutObjectCommand({
+      Bucket: process.env.B2_BUCKET_NAME,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType || 'application/octet-stream',
+      ACL: 'public-read',
+    });
+
+    await s3Client.send(command);
+
+    // Construct public URL
+    const publicUrl = `https://${process.env.B2_BUCKET_NAME}.${process.env.B2_ENDPOINT}/${key}`;
+
+    res.status(200).json({ url: publicUrl });
+  } catch (error) {
+    console.error('B2 upload error:', error);
+    res.status(500).json({ error: 'Upload failed' });
+  }
+};

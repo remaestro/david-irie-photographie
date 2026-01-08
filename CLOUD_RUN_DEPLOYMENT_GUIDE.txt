@@ -1,0 +1,327 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║          🚀 GUIDE DE DÉPLOIEMENT CLOUD RUN - ÉTAPE PAR ÉTAPE             ║
+║                   David Irie Photographie                                 ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+TEMPS ESTIMÉ: 2-3 heures (première fois)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1: SETUP GOOGLE CLOUD (30 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 1.1: Créer un compte Google Cloud
+────────────────────────────────────────
+1. Va sur https://console.cloud.google.com
+2. Connecte-toi avec ton compte Google
+3. Accepte les termes et conditions
+4. Active la facturation:
+   - Clique sur "Billing" dans le menu
+   - "Add billing account"
+   - Entre ta carte bancaire (AUCUN DÉBIT automatique!)
+   - Free tier: $300 crédits gratuits pendant 90 jours
+   - Après: Pay-as-you-go (mais on reste dans le free tier!)
+
+ÉTAPE 1.2: Créer un nouveau projet
+───────────────────────────────────
+1. En haut de la console, clique sur le sélecteur de projet
+2. "New Project"
+3. Nom: "david-irie-photographie"
+4. ID du projet: "david-irie-photographie" (ou auto-généré)
+5. "Create"
+6. Sélectionne ce projet
+
+ÉTAPE 1.3: Activer les APIs nécessaires
+────────────────────────────────────────
+Dans la console GCP:
+1. Va dans "APIs & Services" > "Library"
+2. Active ces APIs (cherche et clique "Enable" sur chacune):
+   ✅ Cloud Run API
+   ✅ Cloud Build API
+   ✅ Container Registry API
+   ✅ Cloud Functions API
+   ✅ Cloud Logging API
+   ✅ Cloud Scheduler API (pour cleanOldGalleries)
+
+ÉTAPE 1.4: Installer gcloud CLI
+────────────────────────────────
+MacOS:
+```bash
+brew install google-cloud-sdk
+```
+
+Linux:
+```bash
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+```
+
+Windows:
+Télécharge l'installeur: https://cloud.google.com/sdk/docs/install
+
+ÉTAPE 1.5: Authentifier gcloud
+───────────────────────────────
+```bash
+# Login
+gcloud auth login
+
+# Configure le projet
+gcloud config set project david-irie-photographie
+
+# Vérifie la config
+gcloud config list
+```
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2: DÉPLOIEMENT INITIAL (1 heure)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 2.1: Build Docker image localement (optionnel - test)
+────────────────────────────────────────────────────────────
+```bash
+cd david-irie-photographie
+
+# Build l'image
+docker build -t david-irie-photographie .
+
+# Test localement
+docker run -p 8080:8080 david-irie-photographie
+
+# Ouvre http://localhost:8080 dans ton navigateur
+# Si ça marche → CTRL+C pour arrêter
+```
+
+ÉTAPE 2.2: Déployer sur Cloud Run (PREMIÈRE MÉTHODE - Manuel)
+──────────────────────────────────────────────────────────────
+```bash
+# Se placer dans le dossier du projet
+cd david-irie-photographie
+
+# Déployer directement (Cloud Build s'occupe de tout!)
+gcloud run deploy david-irie-photographie \
+  --source . \
+  --platform managed \
+  --region europe-west1 \
+  --allow-unauthenticated \
+  --min-instances 0 \
+  --max-instances 10
+
+# Attends 3-5 minutes...
+# Tu verras: "Building and deploying... ████████████ 100%"
+# À la fin, il affiche l'URL: https://david-irie-photographie-xxxxx-ew.a.run.app
+```
+
+✅ TESTE TON SITE: Ouvre l'URL dans un navigateur!
+
+ÉTAPE 2.3: Déployer les Cloud Functions
+────────────────────────────────────────
+
+A. sendEmail Function
+```bash
+cd david-irie-photographie
+
+gcloud functions deploy sendEmail \
+  --gen2 \
+  --runtime nodejs22 \
+  --trigger-http \
+  --allow-unauthenticated \
+  --region europe-west1 \
+  --entry-point sendEmail \
+  --source cloud-functions/sendEmail \
+  --set-env-vars GMAIL_USER=TON-EMAIL@gmail.com,GMAIL_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx
+
+# Note l'URL retournée: https://europe-west1-PROJECT_ID.cloudfunctions.net/sendEmail
+```
+
+B. uploadToCloudinary Function
+```bash
+gcloud functions deploy uploadToCloudinary \
+  --gen2 \
+  --runtime nodejs22 \
+  --trigger-http \
+  --allow-unauthenticated \
+  --region europe-west1 \
+  --entry-point uploadToCloudinary \
+  --source cloud-functions/uploadToCloudinary \
+  --set-env-vars CLOUDINARY_CLOUD_NAME=xxx,CLOUDINARY_API_KEY=xxx,CLOUDINARY_API_SECRET=xxx
+```
+
+C. uploadToBackblaze Function
+```bash
+gcloud functions deploy uploadToBackblaze \
+  --gen2 \
+  --runtime nodejs22 \
+  --trigger-http \
+  --allow-unauthenticated \
+  --region europe-west1 \
+  --entry-point uploadToBackblaze \
+  --source cloud-functions/uploadToBackblaze \
+  --set-env-vars B2_KEY_ID=xxx,B2_APPLICATION_KEY=xxx,B2_BUCKET_NAME=david-irie-galeries-privees,B2_ENDPOINT=s3.us-west-004.backblazeb2.com,B2_REGION=us-west-004
+```
+
+ÉTAPE 2.4: Mettre à jour les URLs des fonctions dans le code
+─────────────────────────────────────────────────────────────
+Édite src/pages/Contact.jsx:
+
+Remplace:
+```javascript
+const response = await fetch('/.netlify/functions/sendEmail', {
+```
+
+Par:
+```javascript
+const response = await fetch('https://europe-west1-PROJECT_ID.cloudfunctions.net/sendEmail', {
+```
+
+(Fais de même pour uploadToCloudinary et uploadToBackblaze)
+
+Commit et redéploie:
+```bash
+git add .
+git commit -m "Update function URLs for Cloud Functions"
+git push origin main
+
+# Redéploie Cloud Run
+gcloud run deploy david-irie-photographie --source .
+```
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3: CI/CD AUTO-DEPLOY (30 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 3.1: Connecter GitHub à Cloud Build
+──────────────────────────────────────────
+1. Va dans Cloud Console → Cloud Build → Triggers
+2. "Connect Repository"
+3. Sélectionne "GitHub"
+4. Autorise Google Cloud à accéder à ton GitHub
+5. Sélectionne "remaestro/david-irie-photographie"
+6. "Connect"
+
+ÉTAPE 3.2: Créer un trigger
+───────────────────────────
+1. "Create Trigger"
+2. Nom: "deploy-on-push"
+3. Event: "Push to a branch"
+4. Source: Branch = "^main$"
+5. Configuration: "Cloud Build configuration file (yaml or json)"
+6. Location: "Repository" → /cloudbuild.yaml
+7. "Create"
+
+✅ MAINTENANT: Chaque git push sur main = auto-deploy! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4: OPTIMISATIONS (30 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÉTAPE 4.1: Setup Cloudflare CDN (ÉCONOMIE BANDWIDTH!)
+──────────────────────────────────────────────────────
+1. Crée un compte Cloudflare: https://cloudflare.com
+2. Ajoute ton domaine (ou utilise un sous-domaine)
+3. Dans Cloudflare DNS:
+   - Type: CNAME
+   - Name: photos (ou @)
+   - Target: ghs.googlehosted.com
+4. Dans Cloud Run:
+   ```bash
+   gcloud run services update david-irie-photographie \
+     --region europe-west1 \
+     --add-cloudsql-instances photos.tondomaine.com
+   ```
+5. Dans Cloudflare → SSL/TLS → Overview → "Full"
+6. Dans Cloudflare → Speed → Optimization → Enable tout
+
+✅ RÉSULTAT: Bandwidth GRATUIT illimité! 🎉
+
+ÉTAPE 4.2: Configurer un custom domain
+───────────────────────────────────────
+```bash
+gcloud run domain-mappings create \
+  --service david-irie-photographie \
+  --domain photos.tondomaine.com \
+  --region europe-west1
+```
+
+Suis les instructions pour configurer le DNS.
+
+ÉTAPE 4.3: Setup Monitoring & Alertes
+──────────────────────────────────────
+1. Cloud Console → Monitoring → Alerting
+2. "Create Policy"
+3. Alerte si:
+   - Requests > 1.8M/mois (90% du free tier)
+   - Bandwidth > 900 MB (90% du free tier)
+4. Notification par email
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMMANDES UTILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Voir les logs
+gcloud run services logs read david-irie-photographie --region europe-west1
+
+# Voir les déploiements
+gcloud run services list --region europe-west1
+
+# Voir les détails du service
+gcloud run services describe david-irie-photographie --region europe-west1
+
+# Mettre à jour les variables d'environnement
+gcloud run services update david-irie-photographie \
+  --region europe-west1 \
+  --set-env-vars KEY=VALUE
+
+# Rollback vers une version précédente
+gcloud run services update-traffic david-irie-photographie \
+  --region europe-west1 \
+  --to-revisions REVISION_NAME=100
+
+# Supprimer le service
+gcloud run services delete david-irie-photographie --region europe-west1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COÛTS ESTIMÉS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Avec ton trafic actuel (50 deploys/mois, 10 clients/mois):
+
+Cloud Run:             0€ (dans free tier)
+Cloud Functions:       0€ (dans free tier)
+Cloud Build:           0€ (120 builds/jour gratuit)
+Bandwidth sans CDN:    ~2€/mois
+Bandwidth avec CDN:    0€ (Cloudflare gratuit)
+
+TOTAL: 0€/mois avec Cloudflare! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problème: "Permission denied"
+Solution: 
+```bash
+gcloud auth application-default login
+```
+
+Problème: "Build failed"
+Solution: Vérifie les logs
+```bash
+gcloud builds log --region=europe-west1
+```
+
+Problème: "503 Service Unavailable"
+Solution: Cold start en cours, réessaye dans 30s
+
+Problème: Site vide/erreur 404
+Solution: Vérifie que base: '/' dans vite.config.js
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 FÉLICITATIONS! Ton site est maintenant sur Cloud Run!
+
+Avantages:
+✅ Builds illimités (3600/mois gratuit!)
+✅ Deploy illimité
+✅ 0€/mois avec Cloudflare CDN
+✅ Scalabilité infinie
+✅ Pas de vendor lock-in (Docker standard)
+
