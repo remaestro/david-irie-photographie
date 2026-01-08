@@ -1,0 +1,91 @@
+# Configuration Google Analytics - David Irie Photographie
+
+## Étapes de Configuration
+
+### 1. Créer un compte Google Analytics
+
+1. Allez sur https://analytics.google.com/
+2. Cliquez sur "Commencer gratuitement"
+3. Connectez-vous avec votre compte Google
+4. Créez un compte Analytics :
+   - Nom du compte : "David Irie Photographie"
+   - Paramètres de partage de données : laissez par défaut
+
+### 2. Créer une propriété
+
+1. Nom de la propriété : "David Irie Photographie Website"
+2. Fuseau horaire : "GMT+0 Côte d'Ivoire"
+3. Devise : "Euro (EUR)" ou "Franc CFA (XOF)"
+
+### 3. Configurer le flux de données
+
+1. Choisir "Web"
+2. URL du site web : `https://remaestro.github.io/david-irie-photographie/`
+3. Nom du flux : "Site Web Principal"
+4. Copier l'ID de mesure (format: G-XXXXXXXXXX)
+
+### 4. Intégrer l'ID dans le site
+
+1. Ouvrir le fichier `index.html`
+2. Ligne 39 : Remplacer `G-XXXXXXXXXX` par votre vrai ID de mesure
+3. Ligne 44 : Remplacer également `G-XXXXXXXXXX`
+4. Sauvegarder et redéployer
+
+### 5. Vérifier que ça fonctionne
+
+1. Déployez les changements
+2. Visitez votre site
+3. Dans Google Analytics, allez dans "Rapports" > "Temps réel"
+4. Vous devriez voir votre visite apparaître dans les 30 secondes
+
+## Données Trackées Automatiquement
+
+- **Pages vues** : Quelles pages sont les plus visitées
+- **Sessions** : Nombre de visites sur le site
+- **Utilisateurs** : Visiteurs uniques
+- **Durée de session** : Temps passé sur le site
+- **Taux de rebond** : Pourcentage de visiteurs qui partent après 1 page
+- **Source de trafic** : D'où viennent vos visiteurs (Google, réseaux sociaux, etc.)
+- **Appareils** : Desktop, mobile, tablette
+- **Localisation** : Pays et villes des visiteurs
+
+## Rapports Utiles à Consulter
+
+### 1. Tableau de bord principal
+- Vue d'ensemble du trafic
+- Utilisateurs actifs en temps réel
+
+### 2. Acquisition
+- Comment les visiteurs trouvent votre site
+- Efficacité des réseaux sociaux
+
+### 3. Engagement
+- Pages les plus populaires
+- Temps passé sur chaque page
+- Quelles galeries sont les plus consultées
+
+### 4. Événements (à configurer plus tard)
+- Clics sur bouton "Contact"
+- Téléchargements de photos (galeries privées)
+- Clics sur numéro de téléphone
+- Soumissions de formulaire
+
+## Confidentialité & RGPD
+
+Le tracking est déjà configuré pour respecter la vie privée :
+
+✅ **Anonymisation IP** : Les adresses IP sont anonymisées
+✅ **Cookies sécurisés** : Flags SameSite et Secure activés
+✅ **Pas de données personnelles** : Aucune donnée personnelle n'est envoyée à GA
+
+### Note importante
+Selon le RGPD, vous devriez :
+1. Avoir une page "Politique de Confidentialité"
+2. Informer les utilisateurs de l'utilisation de Google Analytics
+3. Idéalement, avoir un bandeau de consentement aux cookies
+
+## Support
+
+Pour toute question sur Google Analytics :
+- Documentation : https://support.google.com/analytics
+- Centre d'aide : https://analytics.google.com/analytics/help/

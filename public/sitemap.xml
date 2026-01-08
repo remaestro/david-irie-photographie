@@ -89,4 +89,12 @@
     <priority>0.7</priority>
   </url>
   
+  <!-- Galeries Privées -->
+  <url>
+    <loc>https://remaestro.github.io/david-irie-photographie/#/galeries-privees</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 </urlset>
