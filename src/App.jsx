@@ -147,9 +147,9 @@ function App() {
                   <Link to="/portfolio/mariage" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Mariage</Link>
                   <Link to="/portfolio/couple" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Couple</Link>
                   <Link to="/portfolio/evenements" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Événements</Link>
-                  <a href="#shooting-strobist" onClick={() => setMobileMenuOpen(false)}>Shooting strobist</a>
-                  <a href="#shooting-exterieur" onClick={() => setMobileMenuOpen(false)}>Shooting extérieur</a>
-                  <a href="#shooting-studio" onClick={() => setMobileMenuOpen(false)}>Shooting studio</a>
+                  <Link to="/portfolio/strobist" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Shooting Strobist</Link>
+                  <Link to="/portfolio/exterieur" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Shooting Extérieur</Link>
+                  <Link to="/portfolio/studio" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Shooting Studio</Link>
                 </div>
               )}
             </div>
