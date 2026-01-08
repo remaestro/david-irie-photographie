@@ -1,0 +1,242 @@
+# Configuration Stockage Cloud - David Irie Photographie
+
+## 🎯 Architecture Choisie
+
+### **2 TB Backblaze B2 + Cloudinary + Cloudflare**
+- **Coût total : ~10€/mois**
+- **Capacité : 2 TB** (photos + vidéos)
+- **Rotation : 1 an** (suppression automatique)
+
+---
+
+## 📦 Services Utilisés
+
+### 1. **Cloudinary (Gratuit - 25 GB)**
+**Usage :** Photos d'inspiration du formulaire de contact
+
+- Upload temporaire
+- Email avec liens
+- Suppression après téléchargement
+
+### 2. **Backblaze B2 (2 TB - ~10€/mois)**
+**Usage :** Galeries privées (photos + vidéos finales)
+
+- Stockage permanent (1 an)
+- Protection par mot de passe
+- URLs directes pour clients
+
+### 3. **Cloudflare (Gratuit)**
+**Usage :** CDN pour accélération mondiale
+
+- Bande passante gratuite illimitée
+- Cache intelligent
+- Distribution rapide
+
+---
+
+## 🔧 ÉTAPE 1 : Configuration Cloudinary
+
+### A. Créer le compte (5 min)
+
+1. Aller sur https://cloudinary.com/users/register_free
+2. S'inscrire avec ton email professionnel
+3. Plan : **Free** (25 GB)
+
+### B. Récupérer les clés
+
+1. Dashboard → Settings (⚙️) → Account
+2. Noter ces 3 valeurs :
+
+```
+Cloud Name: __________________
+API Key: ______________________
+API Secret: ___________________
+```
+
+### C. Configurer dans Netlify
+
+Ajouter ces variables d'environnement :
+
+```
+CLOUDINARY_CLOUD_NAME=ton_cloud_name
+CLOUDINARY_API_KEY=ta_api_key
+CLOUDINARY_API_SECRET=ton_api_secret
+```
+
+---
+
+## 🔧 ÉTAPE 2 : Configuration Backblaze B2
+
+### A. Créer le compte (10 min)
+
+1. Aller sur https://www.backblaze.com/b2/sign-up.html
+2. S'inscrire
+3. Vérifier l'email
+
+### B. Créer un Bucket
+
+1. Dashboard → **Buckets** → **Create a Bucket**
+2. Paramètres :
+   ```
+   Bucket Name: david-irie-galeries-privees
+   Files in Bucket: Private
+   Default Encryption: Disable
+   Object Lock: Disable
+   ```
+3. Cliquer **Create a Bucket**
+
+### C. Créer une Application Key
+
+1. Dashboard → **App Keys** → **Add a New Application Key**
+2. Paramètres :
+   ```
+   Name of Key: netlify-functions
+   Allow access to Bucket: david-irie-galeries-privees
+   Type of Access: Read and Write
+   Allow List All Bucket Names: ✓
+   File name prefix: (laisser vide)
+   Duration: (laisser vide = permanent)
+   ```
+3. **IMPORTANT** : Copier immédiatement (visible 1 seule fois !)
+   ```
+   keyID: ______________________
+   applicationKey: ______________
+   ```
+
+### D. Noter l'Endpoint
+
+Format : `s3.us-west-004.backblazeb2.com`
+(varie selon ta région)
+
+### E. Configurer dans Netlify
+
+Ajouter ces variables d'environnement :
+
+```
+B2_KEY_ID=ton_key_id
+B2_APPLICATION_KEY=ton_application_key
+B2_BUCKET_NAME=david-irie-galeries-privees
+B2_ENDPOINT=s3.us-west-004.backblazeb2.com
+B2_REGION=us-west-004
+```
+
+---
+
+## 🔧 ÉTAPE 3 : Configuration Cloudflare (Optionnel mais recommandé)
+
+### Pourquoi ?
+- ✅ Bande passante **gratuite** illimitée
+- ✅ Fichiers servis **10x plus vite**
+- ✅ Cache intelligent
+
+### A. Créer compte Cloudflare
+
+1. https://dash.cloudflare.com/sign-up
+2. Plan gratuit
+
+### B. Lier à Backblaze
+
+1. Cloudflare → **R2** → **Create Bucket**
+   - Ou utiliser **Bandwidth Alliance**
+2. Suivre guide : https://www.backblaze.com/b2/docs/cloudflare.html
+
+**Note :** Configuration technique, peut être fait plus tard.
+
+---
+
+## 📊 Monitoring & Gestion
+
+### Dashboard Backblaze
+
+- **Browse Files** : Voir tous les fichiers
+- **Lifecycle Settings** : Configurer suppression auto après 365 jours
+- **Usage** : Voir stockage utilisé
+
+### Lifecycle Rule (Suppression auto après 1 an)
+
+1. Bucket → **Lifecycle Settings**
+2. **Add a New Rule** :
+   ```
+   Rule Name: auto-delete-old-galleries
+   File Name Prefix: (vide = tout)
+   Keep only the last: 1 version
+   Keep prior versions for: 365 days
+   ```
+3. Save
+
+---
+
+## 💰 Estimation Coûts
+
+### Mois par Mois
+
+| Mois | Clients | Photos | Vidéos | Stockage | Coût |
+|------|---------|--------|--------|----------|------|
+| 1-3 | 30 | 15 GB | 30 GB | 45 GB | **~0.23€** |
+| 4-6 | 60 | 30 GB | 60 GB | 90 GB | **~0.45€** |
+| 7-12 | 120 | 60 GB | 120 GB | 180 GB | **~0.90€** |
+| An 2 | 120 | 150 GB | 300 GB | 450 GB | **~2.25€** |
+| An 3+ | 120 | 200 GB | 400 GB | 600 GB | **~3€** |
+
+**Avec vidéos 4K** (si applicable) :
+- Années 5-10 : **~10€/mois** (proche du max 2 TB)
+
+### Backblaze Pricing Exact
+
+```
+Stockage : $0.005/GB/mois
+1 GB = 0.005€
+1 TB (1000 GB) = 5€/mois
+2 TB = 10€/mois
+```
+
+---
+
+## ⚠️ Notes Importantes
+
+### Sécurité
+
+1. **Ne jamais** commit les clés dans Git
+2. **Toujours** utiliser variables d'environnement Netlify
+3. **Activer** 2FA sur Backblaze et Cloudinary
+
+### Backup
+
+- Backblaze = stockage cloud (pas un backup)
+- **Recommandation** : Backup local sur disque dur externe
+- RAW originaux : stocker localement
+
+### Bande Passante
+
+- Backblaze seul : **1ère GB/jour gratuite**, puis $0.01/GB
+- **Avec Cloudflare** : **TOUT gratuit** ✅
+
+---
+
+## 🚀 Prochaines Étapes
+
+Après avoir complété cette configuration :
+
+1. ✅ Tester upload Cloudinary (formulaire contact)
+2. ✅ Tester upload Backblaze (galerie privée test)
+3. ✅ Vérifier lifecycle rules
+4. ✅ Tester téléchargement client
+5. ✅ Monitorer premier mois
+
+---
+
+## 📞 Support
+
+### Backblaze
+- Email : help@backblaze.com
+- Chat : Dans le dashboard
+- Doc : https://www.backblaze.com/b2/docs/
+
+### Cloudinary
+- Support : https://support.cloudinary.com
+- Doc : https://cloudinary.com/documentation
+
+### Problèmes ?
+- Vérifier variables d'environnement Netlify
+- Vérifier permissions Bucket (Private)
+- Vérifier Application Key (Read + Write)
