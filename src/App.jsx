@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import Lightbox from 'yet-another-react-lightbox'
+import 'yet-another-react-lightbox/styles.css'
 import './App.css'
 
 function App() {
@@ -7,6 +9,8 @@ function App() {
   const [visibleImages, setVisibleImages] = useState(new Set())
   const [currentSlide, setCurrentSlide] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
   const observerRef = useRef(null)
 
   const slides = [
@@ -16,6 +20,23 @@ function App() {
     { title: "LA QUALITÉ AVANT LE PRIX", subtitle: "Créativité & authenticité", buttonText: "Découvrir", image: `${import.meta.env.BASE_URL}images/slide4.jpg` },
     { title: "PORTRAITS & LIFESTYLE", subtitle: "Capturer votre essence", buttonText: "En savoir plus", image: `${import.meta.env.BASE_URL}images/slide5.jpg` }
   ]
+
+  // Instagram photos - reusing slider images as placeholders
+  const instagramPhotos = [
+    `${import.meta.env.BASE_URL}images/slide1.jpg`,
+    `${import.meta.env.BASE_URL}images/slide2.jpg`,
+    `${import.meta.env.BASE_URL}images/slide3.jpg`,
+    `${import.meta.env.BASE_URL}images/slide4.jpg`,
+    `${import.meta.env.BASE_URL}images/slide5.jpg`,
+    `${import.meta.env.BASE_URL}images/slide1.jpg`,
+    `${import.meta.env.BASE_URL}images/slide2.jpg`,
+    `${import.meta.env.BASE_URL}images/slide3.jpg`,
+  ]
+
+  const openLightbox = (index) => {
+    setLightboxIndex(index)
+    setLightboxOpen(true)
+  }
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -251,10 +272,14 @@ function App() {
         {/* Feed Instagram - Bande de photos */}
         <section className="instagram-feed">
           <div className="instagram-photos">
-            {[...Array(8)].map((_, index) => (
-              <div key={index} className="instagram-photo">
-                <div className="instagram-photo-placeholder">
-                  <span className="placeholder-text">IG {index + 1}</span>
+            {instagramPhotos.map((photo, index) => (
+              <div 
+                key={index} 
+                className="instagram-photo"
+                onClick={() => openLightbox(index)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="instagram-photo-placeholder" style={{ backgroundImage: `url(${photo})` }}>
                 </div>
               </div>
             ))}
@@ -307,6 +332,14 @@ function App() {
       <footer className="footer">
         <p>All content Copyright © 2026 DAVID IRIE PHOTOGRAPHIE</p>
       </footer>
+
+      {/* Lightbox */}
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        index={lightboxIndex}
+        slides={instagramPhotos.map(photo => ({ src: photo }))}
+      />
     </div>
   )
 }
