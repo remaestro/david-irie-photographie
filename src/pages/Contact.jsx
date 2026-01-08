@@ -7,13 +7,16 @@ function Contact() {
     name: '',
     email: '',
     phone: '',
-    subject: 'mariage',
+    service: 'mariage',
+    budget: '1000-2000',
     date: '',
-    message: ''
+    message: '',
+    photos: []
   })
   
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null) // 'success' | 'error' | null
+  const [uploadedFiles, setUploadedFiles] = useState([])
 
   // Load Calendly script
   useEffect(() => {
@@ -31,6 +34,41 @@ function Contact() {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
+    })
+  }
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files)
+    
+    // Limit to 5 files
+    if (files.length > 5) {
+      alert('Maximum 5 fichiers autorisés')
+      return
+    }
+
+    // Check file size (max 5MB per file)
+    const maxSize = 5 * 1024 * 1024 // 5MB
+    const validFiles = files.filter(file => {
+      if (file.size > maxSize) {
+        alert(`${file.name} est trop volumineux (max 5MB)`)
+        return false
+      }
+      return true
+    })
+
+    setUploadedFiles(validFiles)
+    setFormData({
+      ...formData,
+      photos: validFiles
+    })
+  }
+
+  const removeFile = (index) => {
+    const newFiles = uploadedFiles.filter((_, i) => i !== index)
+    setUploadedFiles(newFiles)
+    setFormData({
+      ...formData,
+      photos: newFiles
     })
   }
 
@@ -55,6 +93,15 @@ function Contact() {
         // Reset form
         setFormData({
           name: '',
+          email: '',
+          phone: '',
+          service: 'mariage',
+          budget: '1000-2000',
+          date: '',
+          message: '',
+          photos: []
+        })
+        setUploadedFiles([])
           email: '',
           phone: '',
           subject: 'mariage',
@@ -179,20 +226,44 @@ function Contact() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="subject" className="form-label">Type de prestation *</label>
+                <label htmlFor="service" className="form-label">Type de prestation *</label>
                 <select
-                  id="subject"
-                  name="subject"
-                  className="form-select"
-                  value={formData.subject}
+                  id="service"
+                  name="service"
+                  className="form-input"
+                  value={formData.service}
                   onChange={handleChange}
                   required
                 >
                   <option value="mariage">Mariage</option>
-                  <option value="portrait">Portrait / Couple</option>
+                  <option value="couple">Séance Couple</option>
                   <option value="evenement">Événement</option>
-                  <option value="formation">Formation</option>
+                  <option value="portrait">Portrait / Studio</option>
+                  <option value="strobist">Shooting Strobist</option>
+                  <option value="exterieur">Shooting Extérieur</option>
+                  <option value="formation">Formation Photographie</option>
+                  <option value="video">Vidéographie</option>
                   <option value="autre">Autre</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="budget" className="form-label">Budget estimé *</label>
+                <select
+                  id="budget"
+                  name="budget"
+                  className="form-input"
+                  value={formData.budget}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="moins-500">Moins de 500€</option>
+                  <option value="500-1000">500€ - 1 000€</option>
+                  <option value="1000-2000">1 000€ - 2 000€</option>
+                  <option value="2000-3000">2 000€ - 3 000€</option>
+                  <option value="3000-5000">3 000€ - 5 000€</option>
+                  <option value="plus-5000">Plus de 5 000€</option>
+                  <option value="a-discuter">À discuter</option>
                 </select>
               </div>
 
@@ -206,6 +277,37 @@ function Contact() {
                   value={formData.date}
                   onChange={handleChange}
                 />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="photos" className="form-label">Photos d'inspiration (max 5, 5MB chacune)</label>
+                <input
+                  type="file"
+                  id="photos"
+                  name="photos"
+                  className="form-input-file"
+                  onChange={handleFileChange}
+                  multiple
+                  accept="image/*"
+                />
+                <p className="form-help-text">Partagez des photos qui vous inspirent pour votre projet</p>
+                
+                {uploadedFiles.length > 0 && (
+                  <div className="uploaded-files">
+                    {uploadedFiles.map((file, index) => (
+                      <div key={index} className="uploaded-file-item">
+                        <span className="file-name">📎 {file.name}</span>
+                        <button 
+                          type="button" 
+                          className="file-remove-btn"
+                          onClick={() => removeFile(index)}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="form-group">
