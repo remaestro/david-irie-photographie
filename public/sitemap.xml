@@ -41,6 +41,38 @@
     <priority>0.9</priority>
   </url>
   
+  <!-- Portfolio - Strobist -->
+  <url>
+    <loc>https://remaestro.github.io/david-irie-photographie/#/portfolio/strobist</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Portfolio - Extérieur -->
+  <url>
+    <loc>https://remaestro.github.io/david-irie-photographie/#/portfolio/exterieur</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Portfolio - Studio -->
+  <url>
+    <loc>https://remaestro.github.io/david-irie-photographie/#/portfolio/studio</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Vidéos -->
+  <url>
+    <loc>https://remaestro.github.io/david-irie-photographie/#/videos</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
   <!-- Formations -->
   <url>
     <loc>https://remaestro.github.io/david-irie-photographie/#/formations</loc>

@@ -5,4 +5,30 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/david-irie-photographie/',
+  build: {
+    // Code splitting optimization
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separate vendor chunk for React and router
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // Separate chunk for lightbox
+          'lightbox': ['yet-another-react-lightbox'],
+        },
+      },
+    },
+    // Chunk size warning limit
+    chunkSizeWarningLimit: 1000,
+    // Minify options
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+      },
+    },
+  },
+  // Performance optimizations
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'yet-another-react-lightbox'],
+  },
 })
