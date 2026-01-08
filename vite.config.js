@@ -29,6 +29,6 @@ export default defineConfig({
   },
   // Performance optimizations
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'yet-another-react-lightbox'],
+    include: ['react', 'react-dom', 'react-router-dom', 'yet-another-react-lightbox', 'framer-motion'],
   },
 })

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import './About.css'
 
 function About() {
@@ -8,14 +9,35 @@ function About() {
     setFadeIn(true)
   }, [])
 
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+  }
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  }
+
   return (
     <div className={`about-page ${fadeIn ? 'fade-in' : ''}`}>
       {/* Hero Section */}
       <section className="about-hero">
-        <div className="about-hero-overlay">
+        <motion.div 
+          className="about-hero-overlay"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <h1 className="about-hero-title">À Propos</h1>
           <p className="about-hero-subtitle">Ma passion, mon histoire</p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Main Content */}
@@ -38,7 +60,14 @@ function About() {
         </section>
 
         {/* Story Section */}
-        <section className="about-story-section">
+        <motion.section 
+          className="about-story-section"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeInUp}
+          transition={{ duration: 0.6 }}
+        >
           <div className="story-content">
             <h2 className="section-title">Mon Histoire</h2>
             <div className="story-text">
@@ -59,45 +88,51 @@ function About() {
               </p>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Philosophy Section */}
-        <section className="about-philosophy-section">
-          <div className="philosophy-grid">
-            <div className="philosophy-item">
+        <motion.section 
+          className="about-philosophy-section"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainer}
+        >
+          <motion.div className="philosophy-grid">
+            <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <div className="philosophy-icon">🎨</div>
               <h3>Créativité</h3>
               <p>
                 Chaque séance est une toile blanche où j'exprime ma vision artistique tout en 
                 respectant votre personnalité et vos désirs.
               </p>
-            </div>
-            <div className="philosophy-item">
+            </motion.div>
+            <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <div className="philosophy-icon">❤️</div>
               <h3>Authenticité</h3>
               <p>
                 Je privilégie les moments naturels et spontanés. Mes photos racontent des histoires 
                 vraies, pleines d'émotions sincères.
               </p>
-            </div>
-            <div className="philosophy-item">
+            </motion.div>
+            <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <div className="philosophy-icon">⭐</div>
               <h3>Excellence</h3>
               <p>
                 La qualité est au cœur de mon travail. Du shooting à la livraison finale, 
                 je m'engage à vous offrir le meilleur.
               </p>
-            </div>
-            <div className="philosophy-item">
+            </motion.div>
+            <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
               <div className="philosophy-icon">🤝</div>
               <h3>Écoute</h3>
               <p>
                 Votre vision est essentielle. Je prends le temps de comprendre vos attentes 
                 pour créer ensemble des images qui vous ressemblent.
               </p>
-            </div>
-          </div>
-        </section>
+            </motion.div>
+          </motion.div>
+        </motion.section>
 
         {/* Approach Section */}
         <section className="about-approach-section">

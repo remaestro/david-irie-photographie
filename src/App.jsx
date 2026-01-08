@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import './App.css'
@@ -192,18 +193,29 @@ function App() {
         </div>
 
         {/* Contenu Hero par-dessus tout */}
-        <div className="hero-slide-content">
+        <motion.div 
+          className="hero-slide-content"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
           <h2 className="hero-slide-title">{slides[currentSlide].title}</h2>
           {slides[currentSlide].subtitle && <p className="hero-slide-subtitle">{slides[currentSlide].subtitle}</p>}
           {slides[currentSlide].buttonText && (
             <a href="#" className="hero-slide-button">{slides[currentSlide].buttonText}</a>
           )}
-        </div>
+        </motion.div>
       </header>
 
       <main>
         {/* Texte de mission centré */}
-        <section className="mission-section">
+        <motion.section 
+          className="mission-section"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="mission-content">
             <p className="mission-statement">
               Photographe mariage Paris, je suis disponible pour immortaliser les émotions de votre journée de mariage, 
@@ -211,7 +223,7 @@ function App() {
               que la vidéo partout en France.
             </p>
           </div>
-        </section>
+        </motion.section>
 
         {/* Vidéo Banner - Player Vimeo */}
         <section className="video-banner-section">
