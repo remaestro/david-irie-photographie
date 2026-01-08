@@ -11,6 +11,9 @@ function Contact() {
     date: '',
     message: ''
   })
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState(null) // 'success' | 'error' | null
 
   const handleChange = (e) => {
     setFormData({
@@ -19,10 +22,43 @@ function Contact() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    alert('Merci pour votre message ! Je vous répondrai dans les plus brefs délais.')
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      const response = await fetch('/.netlify/functions/sendEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: 'mariage',
+          date: '',
+          message: ''
+        })
+      } else {
+        setSubmitStatus('error')
+        console.error('Error:', result.message)
+      }
+    } catch (error) {
+      setSubmitStatus('error')
+      console.error('Error sending email:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -174,9 +210,21 @@ function Contact() {
                 ></textarea>
               </div>
 
-              <button type="submit" className="form-submit">
-                Envoyer le message
+              <button type="submit" className="form-submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
               </button>
+
+              {submitStatus === 'success' && (
+                <div className="form-message form-success">
+                  ✅ Message envoyé avec succès ! Vous recevrez une réponse rapidement.
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="form-message form-error">
+                  ❌ Erreur lors de l'envoi. Veuillez réessayer ou me contacter directement par email.
+                </div>
+              )}
             </form>
           </div>
         </div>

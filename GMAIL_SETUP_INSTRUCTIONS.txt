@@ -1,0 +1,42 @@
+🔧 CONFIGURATION GMAIL SMTP POUR NETLIFY
+==========================================
+
+📋 ÉTAPES À SUIVRE:
+
+1. CRÉER UN MOT DE PASSE D'APPLICATION GMAIL
+   -----------------------------------------
+   a) Aller sur: https://myaccount.google.com/
+   b) Sécurité → Validation en deux étapes (activez-la si ce n'est pas déjà fait)
+   c) Sécurité → Mots de passe des applications
+   d) Sélectionner "Autre (nom personnalisé)"
+   e) Taper: "David Irie Photographie Website"
+   f) Cliquer "Générer"
+   g) COPIER le mot de passe de 16 caractères (format: xxxx xxxx xxxx xxxx)
+
+2. CONFIGURER LES VARIABLES D'ENVIRONNEMENT NETLIFY
+   ------------------------------------------------
+   a) Aller sur: https://app.netlify.com/
+   b) Sélectionner votre site
+   c) Site settings → Environment variables
+   d) Ajouter ces 2 variables:
+
+      GMAIL_USER = votre-email@gmail.com
+      GMAIL_APP_PASSWORD = xxxxxxxxxxxxxx (les 16 caractères SANS espaces)
+
+3. REDÉPLOYER LE SITE
+   ------------------
+   Les variables d'environnement seront actives au prochain déploiement.
+
+⚠️ IMPORTANT:
+- N'utilisez JAMAIS votre mot de passe Gmail normal
+- Utilisez UNIQUEMENT le mot de passe d'application
+- Ne commitez JAMAIS ces identifiants dans Git
+- Le fichier .env.example montre le format mais avec des exemples
+
+📧 TEST:
+Une fois configuré, testez le formulaire de contact sur:
+https://remaestro.github.io/david-irie-photographie/#/contact
+
+Vous devriez recevoir:
+1. Un email avec le message du client
+2. Le client reçoit une confirmation automatique
