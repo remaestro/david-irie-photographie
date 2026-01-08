@@ -22,15 +22,15 @@ function App() {
     { title: "PORTRAITS & LIFESTYLE", subtitle: "Capturer votre essence", buttonText: "En savoir plus", image: `${import.meta.env.BASE_URL}images/slide5.jpg` }
   ]
 
-  // Instagram photos - reusing slider images as placeholders
+  // Instagram photos - mix of real photos and illustrations
   const instagramPhotos = [
-    `${import.meta.env.BASE_URL}images/slide1.jpg`,
-    `${import.meta.env.BASE_URL}images/slide2.jpg`,
-    `${import.meta.env.BASE_URL}images/slide3.jpg`,
-    `${import.meta.env.BASE_URL}images/slide4.jpg`,
-    `${import.meta.env.BASE_URL}images/slide5.jpg`,
-    `${import.meta.env.BASE_URL}images/slide1.jpg`,
-    `${import.meta.env.BASE_URL}images/slide2.jpg`,
+    `${import.meta.env.BASE_URL}images/couple-bijoux-1.jpg`,
+    `${import.meta.env.BASE_URL}images/gemini-1.png`,
+    `${import.meta.env.BASE_URL}images/bouquet-roses-1.jpg`,
+    `${import.meta.env.BASE_URL}images/homme-fleur.jpg`,
+    `${import.meta.env.BASE_URL}images/gemini-2.png`,
+    `${import.meta.env.BASE_URL}images/bouquet-roses-2.jpg`,
+    `${import.meta.env.BASE_URL}images/couple-bijoux-2.jpg`,
     `${import.meta.env.BASE_URL}images/slide3.jpg`,
   ]
 

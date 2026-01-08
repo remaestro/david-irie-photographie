@@ -13,18 +13,18 @@ function Evenements() {
     setFadeIn(true)
   }, [])
 
-  // Event photos - using existing images as placeholders
+  // Event photos
   const photos = [
+    { src: `${import.meta.env.BASE_URL}images/bouquet-roses-1.jpg`, width: 3, height: 4 }, // Bouquet roses
     { src: `${import.meta.env.BASE_URL}images/slide3.jpg`, width: 16, height: 9 }, // Landscape
     { src: `${import.meta.env.BASE_URL}images/slide4.jpg`, width: 3, height: 4 }, // Portrait
+    { src: `${import.meta.env.BASE_URL}images/bouquet-roses-2.jpg`, width: 3, height: 4 }, // Bouquet roses 2
     { src: `${import.meta.env.BASE_URL}images/slide5.jpg`, width: 4, height: 5 }, // Portrait tall
     { src: `${import.meta.env.BASE_URL}images/slide1.jpg`, width: 16, height: 9 }, // Landscape
     { src: `${import.meta.env.BASE_URL}images/slide2.jpg`, width: 3, height: 4 }, // Portrait
     { src: `${import.meta.env.BASE_URL}images/slide3.jpg`, width: 4, height: 5 }, // Portrait tall
     { src: `${import.meta.env.BASE_URL}images/slide4.jpg`, width: 16, height: 9 }, // Landscape
     { src: `${import.meta.env.BASE_URL}images/slide5.jpg`, width: 3, height: 4 }, // Portrait
-    { src: `${import.meta.env.BASE_URL}images/slide1.jpg`, width: 4, height: 5 }, // Portrait tall
-    { src: `${import.meta.env.BASE_URL}images/slide2.jpg`, width: 16, height: 9 }, // Landscape
   ]
 
   const openLightbox = (index) => {

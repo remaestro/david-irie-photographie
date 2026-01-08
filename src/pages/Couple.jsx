@@ -13,8 +13,11 @@ function Couple() {
     setFadeIn(true)
   }, [])
 
-  // Couple photos - using existing images as placeholders
+  // Couple photos
   const photos = [
+    { src: `${import.meta.env.BASE_URL}images/couple-bijoux-1.jpg`, width: 3, height: 4 }, // Couple bijoux 1
+    { src: `${import.meta.env.BASE_URL}images/homme-fleur.jpg`, width: 3, height: 4 }, // Homme avec fleur
+    { src: `${import.meta.env.BASE_URL}images/couple-bijoux-2.jpg`, width: 3, height: 4 }, // Couple bijoux 2
     { src: `${import.meta.env.BASE_URL}images/slide2.jpg`, width: 4, height: 5 }, // Portrait tall
     { src: `${import.meta.env.BASE_URL}images/slide3.jpg`, width: 3, height: 4 }, // Portrait
     { src: `${import.meta.env.BASE_URL}images/slide4.jpg`, width: 16, height: 9 }, // Landscape
@@ -22,9 +25,6 @@ function Couple() {
     { src: `${import.meta.env.BASE_URL}images/slide1.jpg`, width: 3, height: 4 }, // Portrait
     { src: `${import.meta.env.BASE_URL}images/slide2.jpg`, width: 16, height: 9 }, // Landscape
     { src: `${import.meta.env.BASE_URL}images/slide3.jpg`, width: 4, height: 5 }, // Portrait tall
-    { src: `${import.meta.env.BASE_URL}images/slide4.jpg`, width: 3, height: 4 }, // Portrait
-    { src: `${import.meta.env.BASE_URL}images/slide5.jpg`, width: 16, height: 9 }, // Landscape
-    { src: `${import.meta.env.BASE_URL}images/slide1.jpg`, width: 4, height: 5 }, // Portrait tall
   ]
 
   const openLightbox = (index) => {
