@@ -356,6 +356,85 @@ function App() {
           </div>
         </section>
 
+        {/* Section Témoignages */}
+        <motion.section 
+          className="testimonials-section"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="section-title">Témoignages</h2>
+          <p className="testimonials-subtitle">Ce que disent mes clients</p>
+          
+          <div className="testimonials-grid">
+            <motion.div 
+              className="testimonial-card"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
+              <p className="testimonial-text">
+                "David a capturé notre mariage avec une sensibilité et un professionnalisme extraordinaires. 
+                Chaque photo raconte notre histoire. Nous sommes émerveillés par son travail !"
+              </p>
+              <div className="testimonial-author">
+                <p className="author-name">Sarah & Antoine</p>
+                <p className="author-event">Mariage - Juin 2025</p>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="testimonial-card"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
+              <p className="testimonial-text">
+                "Une séance photo en couple inoubliable ! David nous a mis à l'aise immédiatement. 
+                Les photos sont magnifiques, naturelles et pleines d'émotions. Merci infiniment !"
+              </p>
+              <div className="testimonial-author">
+                <p className="author-name">Élodie & Marc</p>
+                <p className="author-event">Séance Couple - Mars 2025</p>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="testimonial-card"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
+              <p className="testimonial-text">
+                "Photographe exceptionnel pour notre événement d'entreprise. Professionnel, 
+                créatif et discret. Les photos ont dépassé nos attentes. Je recommande vivement !"
+              </p>
+              <div className="testimonial-author">
+                <p className="author-name">Caroline D.</p>
+                <p className="author-event">Événement Corporate - Janvier 2026</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="testimonials-cta"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <p>Rejoignez nos clients satisfaits</p>
+            <Link to="/contact" className="testimonials-button">Réserver une Séance</Link>
+          </motion.div>
+        </motion.section>
+
         {/* Section Contact */}
         <section id="contact" className="contact-section">
           <h2 className="section-title-large">COMMENÇONS VOTRE VOYAGE</h2>
