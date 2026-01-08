@@ -102,12 +102,6 @@ function Contact() {
           photos: []
         })
         setUploadedFiles([])
-          email: '',
-          phone: '',
-          subject: 'mariage',
-          date: '',
-          message: ''
-        })
       } else {
         setSubmitStatus('error')
         console.error('Error:', result.message)
