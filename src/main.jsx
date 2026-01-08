@@ -9,6 +9,7 @@ import About from './pages/About.jsx'
 import Mariage from './pages/Mariage.jsx'
 import Couple from './pages/Couple.jsx'
 import Evenements from './pages/Evenements.jsx'
+import Videos from './pages/Videos.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/portfolio/mariage" element={<Mariage />} />
         <Route path="/portfolio/couple" element={<Couple />} />
         <Route path="/portfolio/evenements" element={<Evenements />} />
+        <Route path="/videos" element={<Videos />} />
       </Routes>
     </HashRouter>
   </StrictMode>,

@@ -156,21 +156,13 @@ function App() {
 
             {/* Vidéos Dropdown */}
             <div className="nav-dropdown">
-              <button 
-                className="nav-link dropdown-toggle"
-                onClick={() => toggleDropdown('videos')}
+              <Link 
+                to="/videos"
+                className="nav-link"
+                onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}
               >
                 Vidéos
-              </button>
-              {activeDropdown === 'videos' && (
-                <div className="dropdown-menu">
-                  <a href="#teaser-mariage" onClick={() => setMobileMenuOpen(false)}>Teaser mariage</a>
-                  <a href="#pre-wedding" onClick={() => setMobileMenuOpen(false)}>Pré-wedding</a>
-                  <a href="#demande-mariage" onClick={() => setMobileMenuOpen(false)}>Demande en mariage</a>
-                  <a href="#lifestyle" onClick={() => setMobileMenuOpen(false)}>Lifestyle</a>
-                  <a href="#pub" onClick={() => setMobileMenuOpen(false)}>Spots publicitaire</a>
-                </div>
-              )}
+              </Link>
             </div>
 
             {/* Tarifs Dropdown */}
