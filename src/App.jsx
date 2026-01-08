@@ -195,8 +195,8 @@ function App() {
         {/* Contenu Hero par-dessus tout */}
         <motion.div 
           className="hero-slide-content"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           <h2 className="hero-slide-title">{slides[currentSlide].title}</h2>
