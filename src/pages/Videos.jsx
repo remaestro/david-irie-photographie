@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import './Videos.css'
 
 function Videos() {
@@ -129,11 +130,16 @@ function Videos() {
       {/* Video Grid */}
       <section className="videos-grid-section">
         <div className="videos-grid">
-          {filteredVideos.map(video => (
-            <div 
+          {filteredVideos.map((video, index) => (
+            <motion.div 
               key={video.id} 
               className="video-card"
               onClick={() => openVideo(video)}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -10, transition: { duration: 0.3 } }}
             >
               <div className="video-thumbnail">
                 <img src={video.thumbnail} alt={video.title} />
@@ -145,7 +151,7 @@ function Videos() {
               <div className="video-info">
                 <h3>{video.title}</h3>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

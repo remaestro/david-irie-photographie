@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import './Portfolio.css'
@@ -65,16 +66,21 @@ function ShootingStrobist() {
       <section className="portfolio-gallery">
         <div className="masonry-grid">
           {photos.map((photo, index) => (
-            <div
+            <motion.div
               key={index}
               className={`masonry-item masonry-item-${photo.width}x${photo.height}`}
               onClick={() => openLightbox(index)}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
             >
               <img src={photo.src} alt={`Strobist ${index + 1}`} loading="lazy" />
               <div className="image-overlay">
                 <span className="overlay-icon">🔍</span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

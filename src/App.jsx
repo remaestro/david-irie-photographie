@@ -226,7 +226,13 @@ function App() {
         </motion.section>
 
         {/* Vidéo Banner - Player Vimeo */}
-        <section className="video-banner-section">
+        <motion.section 
+          className="video-banner-section"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1 }}
+        >
           <div className="video-banner">
             <video 
               className="video-player"
@@ -237,26 +243,46 @@ function App() {
             >
               <source src={`${import.meta.env.BASE_URL}images/video1.mp4`} type="video/mp4" />
             </video>
-            <div className="video-overlay-content">
+            <motion.div 
+              className="video-overlay-content"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
               <h3 className="video-overlay-title">MOMENTS PRÉCIEUX</h3>
               <p className="video-overlay-subtitle">Capturer l'émotion de votre mariage</p>
-            </div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Bouton TARIFS wedding */}
-        <section className="tarifs-button-section">
+        <motion.section 
+          className="tarifs-button-section"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <a href="#tarifs" className="tarifs-button">TARIFS wedding</a>
-        </section>
+        </motion.section>
 
         {/* Photo Slider - Carrousel horizontal comme KAMINASHOOT */}
         <section className="photo-slider-section">
           <div className="photo-slider">
             {slides.map((slide, index) => (
-              <div key={index} className="slider-photo-item" data-index={index}>
+              <motion.div 
+                key={index} 
+                className="slider-photo-item" 
+                data-index={index}
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+              >
                 <div className="slider-photo-placeholder" style={{ backgroundImage: `url(${slide.image})` }}>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
@@ -277,24 +303,38 @@ function App() {
         <section className="instagram-feed">
           <div className="instagram-photos">
             {instagramPhotos.map((photo, index) => (
-              <div 
+              <motion.div 
                 key={index} 
                 className="instagram-photo"
                 onClick={() => openLightbox(index)}
                 style={{ cursor: 'pointer' }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <div className="instagram-photo-placeholder" style={{ backgroundImage: `url(${photo})` }}>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="instagram-overlay">
+          <motion.a 
+            href="https://instagram.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="instagram-overlay"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="instagram-overlay-content">
               <div className="instagram-icon">📷</div>
               <h3>Instagram</h3>
               <p>@davidiriephotographie</p>
             </div>
-          </a>
+          </motion.a>
         </section>
 
         {/* Section À Propos */}
