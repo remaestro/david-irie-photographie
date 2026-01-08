@@ -144,9 +144,9 @@ function App() {
               </button>
               {activeDropdown === 'portfolio' && (
                 <div className="dropdown-menu">
-                  <a href="#mariage" onClick={() => setMobileMenuOpen(false)}>Mariage</a>
-                  <a href="#couple" onClick={() => setMobileMenuOpen(false)}>Couple shoot</a>
-                  <a href="#evenements" onClick={() => setMobileMenuOpen(false)}>Événements</a>
+                  <Link to="/portfolio/mariage" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Mariage</Link>
+                  <Link to="/portfolio/couple" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Couple</Link>
+                  <Link to="/portfolio/evenements" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>Événements</Link>
                   <a href="#shooting-strobist" onClick={() => setMobileMenuOpen(false)}>Shooting strobist</a>
                   <a href="#shooting-exterieur" onClick={() => setMobileMenuOpen(false)}>Shooting extérieur</a>
                   <a href="#shooting-studio" onClick={() => setMobileMenuOpen(false)}>Shooting studio</a>
