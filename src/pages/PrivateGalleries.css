@@ -1,0 +1,335 @@
+/* Private Galleries Page Styles */
+.private-galleries-page {
+  min-height: 100vh;
+  background-color: #fafafa;
+}
+
+/* Hero Section */
+.galleries-hero {
+  height: 50vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+              url('../assets/images/slide1.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.galleries-hero-overlay {
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+}
+
+.galleries-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  font-weight: 400;
+  margin: 0 0 1rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.05em;
+}
+
+.galleries-hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Container */
+.galleries-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+/* Login Section */
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.login-box {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.login-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.login-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.login-description {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #666;
+  margin: 0 0 2.5rem 0;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  margin: -0.5rem 0 1rem 0;
+  text-align: center;
+}
+
+.login-button {
+  width: 100%;
+  padding: 15px;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.login-button:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.login-help {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.login-help p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 0.5rem 0;
+}
+
+.login-help a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #1a1a1a;
+  text-decoration: underline;
+  transition: opacity 0.3s ease;
+}
+
+.login-help a:hover {
+  opacity: 0.7;
+}
+
+/* Gallery Display */
+.gallery-display {
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #eee;
+}
+
+.gallery-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem 0;
+  color: #1a1a1a;
+}
+
+.gallery-date,
+.gallery-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #666;
+  margin: 0.3rem 0;
+}
+
+.logout-button {
+  padding: 10px 25px;
+  background: white;
+  color: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  border-radius: 4px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #1a1a1a;
+  color: white;
+}
+
+.gallery-actions {
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+
+.gallery-instructions {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #555;
+  margin: 0;
+  text-align: center;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.gallery-photo {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #e0e0e0;
+}
+
+.gallery-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-photo:hover img {
+  transform: scale(1.1);
+}
+
+.photo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-photo:hover .photo-overlay {
+  opacity: 1;
+}
+
+.overlay-button {
+  padding: 10px 20px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.overlay-button:hover {
+  background: white;
+  color: #1a1a1a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .galleries-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .galleries-hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .galleries-container {
+    padding: 40px 15px;
+  }
+
+  .login-box {
+    padding: 30px 20px;
+  }
+
+  .login-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .gallery-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .logout-button {
+    width: 100%;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}

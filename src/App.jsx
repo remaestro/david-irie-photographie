@@ -186,7 +186,7 @@ function App() {
             </div>
 
             <Link to="/formations" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Formations</Link>
-            <a href="#galeries" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Galeries privées</a>
+            <Link to="/galeries-privees" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Galeries privées</Link>
             <Link to="/contact" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           </nav>
           <div className="header-spacer"></div>
