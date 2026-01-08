@@ -5,6 +5,7 @@ import './index.css'
 import App from './App.jsx'
 import Formations from './pages/Formations.jsx'
 import Contact from './pages/Contact.jsx'
+import About from './pages/About.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         <Route path="/formations" element={<Formations />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </HashRouter>
   </StrictMode>,

@@ -132,7 +132,7 @@ function App() {
 
           <nav className={`nav ${mobileMenuOpen ? 'nav-open' : ''}`}>
             <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Accueil</Link>
-            <a href="#about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>À Propos</a>
+            <Link to="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>À Propos</Link>
             
             {/* Portfolio Dropdown */}
             <div className="nav-dropdown">

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Contact.css'
 import heroImage from '../assets/images/slide2.jpg'
 
@@ -14,6 +14,18 @@ function Contact() {
   
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null) // 'success' | 'error' | null
+
+  // Load Calendly script
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const handleChange = (e) => {
     setFormData({
@@ -237,15 +249,13 @@ function Contact() {
           <p className="calendar-subtitle">
             Choisissez un créneau pour discuter de votre projet par téléphone ou visioconférence
           </p>
-          <div className="calendar-placeholder">
-            <p className="calendar-placeholder-text">
-              Le calendrier de réservation sera intégré ici.<br/>
-              (Intégration Calendly, Acuity Scheduling ou similaire)
-            </p>
-            <a href="https://calendly.com" target="_blank" rel="noopener noreferrer" className="calendar-button">
-              Prendre rendez-vous
-            </a>
-          </div>
+          
+          {/* Calendly Embed */}
+          <div 
+            className="calendly-inline-widget" 
+            data-url="https://calendly.com/VOTRE-USERNAME/consultation-photographie?hide_gdpr_banner=1&primary_color=1a1a1a"
+            style={{ minWidth: '320px', height: '700px' }}
+          ></div>
         </div>
       </section>
     </div>
