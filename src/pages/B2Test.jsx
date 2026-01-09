@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getPhotoUrl } from '../config/backblaze';
 import '../App.css';
 
@@ -7,6 +7,10 @@ import '../App.css';
  * Displays the test photo uploaded to Backblaze B2
  */
 function B2Test() {
+  const [uploadedPhotos, setUploadedPhotos] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState('');
+  
   // Test photo URL
   const testPhotoUrl = getPhotoUrl('test.jpg');
   
@@ -18,20 +22,68 @@ function B2Test() {
       url: testPhotoUrl,
       folder: 'root'
     },
-    // Uncomment these when you upload photos to these folders
-    // {
-    //   id: 2,
-    //   title: 'Portfolio Example',
-    //   url: getPhotoUrl('example.jpg', 'portfolio'),
-    //   folder: 'portfolio'
-    // },
-    // {
-    //   id: 3,
-    //   title: 'Gallery Example',
-    //   url: getPhotoUrl('example.jpg', 'gallery'),
-    //   folder: 'gallery'
-    // }
+    ...uploadedPhotos
   ];
+
+  /**
+   * Handle file upload to Backblaze B2
+   */
+  const handleFileUpload = async (event) => {
+    const files = Array.from(event.target.files);
+    
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setUploadStatus(`⏳ Upload de ${files.length} photo(s) en cours...`);
+
+    try {
+      const uploadPromises = files.map(async (file) => {
+        // Convert file to base64
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        // Call Cloud Function to upload to B2
+        const response = await fetch('https://europe-west1-david-irie-photographie-208603494308.cloudfunctions.net/uploadToBackblaze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            file: base64,
+            fileName: file.name,
+            galleryId: 'test-uploads',
+            contentType: file.type,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Upload failed for ${file.name}`);
+        }
+
+        const data = await response.json();
+        return {
+          id: Date.now() + Math.random(),
+          title: file.name,
+          url: data.url,
+          folder: 'test-uploads',
+          isLocal: false
+        };
+      });
+
+      const newPhotos = await Promise.all(uploadPromises);
+      setUploadedPhotos(prev => [...prev, ...newPhotos]);
+      setUploadStatus(`✅ ${files.length} photo(s) uploadée(s) avec succès vers Backblaze B2!`);
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadStatus(`❌ Erreur lors de l'upload: ${error.message}`);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="b2-test-page">
@@ -59,6 +111,43 @@ function B2Test() {
           </div>
         </section>
 
+        <section className="upload-section">
+          <div className="upload-box">
+            <h2>📤 Upload Photos vers Backblaze B2</h2>
+            <p>Sélectionnez des photos à uploader directement vers Backblaze B2</p>
+            
+            <div className="upload-controls">
+              <label htmlFor="photo-upload" className="upload-button">
+                {uploading ? '⏳ Chargement...' : '📸 Choisir des photos'}
+                <input
+                  id="photo-upload"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileUpload}
+                  disabled={uploading}
+                  style={{ display: 'none' }}
+                />
+              </label>
+              
+              <a 
+                href="https://secure.backblaze.com/b2_buckets.htm" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="backblaze-link"
+              >
+                🔗 Ouvrir Backblaze Dashboard
+              </a>
+            </div>
+
+            {uploadStatus && (
+              <div className={`upload-status ${uploadStatus.includes('✅') ? 'success' : 'info'}`}>
+                {uploadStatus}
+              </div>
+            )}
+          </div>
+        </section>
+
         <section className="test-photos">
           <h2>📸 Test Photos</h2>
           <div className="photo-grid">
@@ -74,7 +163,9 @@ function B2Test() {
                 </div>
                 <div className="photo-info">
                   <h3>{photo.title}</h3>
-                  <p className="folder-tag">{photo.folder}</p>
+                  <p className="folder-tag">
+                    {photo.folder}
+                  </p>
                   <details>
                     <summary>Show URL</summary>
                     <code className="photo-url">{photo.url}</code>
@@ -386,6 +477,93 @@ const url = getPhotoUrl('photo.jpg', 'portfolio');`}</pre>
         .step-card p {
           margin-bottom: 0;
           opacity: 0.9;
+        }
+
+        .upload-section {
+          margin: 3rem 0;
+        }
+
+        .upload-box {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 2rem;
+          border-radius: 12px;
+          text-align: center;
+        }
+
+        .upload-box h2 {
+          margin-top: 0;
+          color: white;
+        }
+
+        .upload-box p {
+          opacity: 0.9;
+          margin-bottom: 1.5rem;
+        }
+
+        .upload-controls {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .upload-button {
+          background: white;
+          color: #667eea;
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.2s, box-shadow 0.2s;
+          display: inline-block;
+        }
+
+        .upload-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .upload-button:active {
+          transform: translateY(0);
+        }
+
+        .backblaze-link {
+          background: rgba(255,255,255,0.2);
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: background 0.2s;
+          display: inline-block;
+        }
+
+        .backblaze-link:hover {
+          background: rgba(255,255,255,0.3);
+        }
+
+        .upload-status {
+          margin-top: 1rem;
+          padding: 1rem;
+          border-radius: 8px;
+          background: rgba(255,255,255,0.2);
+          backdrop-filter: blur(10px);
+        }
+
+        .upload-status.success {
+          background: rgba(76, 175, 80, 0.3);
+        }
+
+        .upload-status.info {
+          background: rgba(255, 193, 7, 0.3);
+        }
+
+        .local-note {
+          font-size: 0.85rem;
+          color: #ff9800;
+          margin-top: 0.5rem;
+          font-style: italic;
         }
 
         @media (max-width: 768px) {
