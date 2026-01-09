@@ -16,6 +16,7 @@ const ShootingExterieur = lazy(() => import('./pages/ShootingExterieur.jsx'))
 const ShootingStudio = lazy(() => import('./pages/ShootingStudio.jsx'))
 const Videos = lazy(() => import('./pages/Videos.jsx'))
 const PrivateGalleries = lazy(() => import('./pages/PrivateGalleries.jsx'))
+const B2Test = lazy(() => import('./pages/B2Test.jsx'))
 
 // Loading component
 const Loading = () => (
@@ -49,6 +50,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/portfolio/studio" element={<ShootingStudio />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/galeries-privees" element={<PrivateGalleries />} />
+          <Route path="/b2-test" element={<B2Test />} />
         </Routes>
       </Suspense>
     </HashRouter>
