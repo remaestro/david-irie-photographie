@@ -10,13 +10,14 @@ const s3Client = new S3Client({
 });
 
 exports.uploadToBackblaze = async (req, res) => {
-  // Enable CORS
+  // Configure CORS headers for all responses
   res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.set('Access-Control-Max-Age', '3600');
   
+  // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
-    res.set('Access-Control-Allow-Methods', 'POST');
-    res.set('Access-Control-Allow-Headers', 'Content-Type');
-    res.set('Access-Control-Max-Age', '3600');
     return res.status(204).send('');
   }
 
@@ -52,6 +53,6 @@ exports.uploadToBackblaze = async (req, res) => {
     res.status(200).json({ url: publicUrl });
   } catch (error) {
     console.error('B2 upload error:', error);
-    res.status(500).json({ error: 'Upload failed' });
+    res.status(500).json({ error: 'Upload failed', details: error.message });
   }
 };
