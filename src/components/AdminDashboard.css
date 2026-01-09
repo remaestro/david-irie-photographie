@@ -1,0 +1,141 @@
+.admin-dashboard {
+  padding: 2rem 0;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-title h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.dashboard-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.create-gallery-button {
+  background: #1a1a1a;
+  color: white;
+  border: 1px solid #1a1a1a;
+  padding: 0.7rem 1.3rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.create-gallery-button:hover {
+  background: #333;
+  border-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button {
+  background: white;
+  color: #1a1a1a;
+  border: 1px solid #d0d0d0;
+  padding: 0.7rem 1.3rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.logout-button:hover {
+  background: #fafafa;
+  border-color: #1a1a1a;
+  transform: translateY(-1px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  margin: 2rem 1rem;
+}
+
+.empty-icon {
+  color: #d0d0d0;
+  margin-bottom: 1.5rem;
+}
+
+.empty-icon {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.galleries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-actions {
+    width: 100%;
+  }
+
+  .create-gallery-button,
+  .logout-button {
+    flex: 1;
+  }
+
+  .galleries-grid {
+    grid-template-columns: 1fr;
+  }
+}

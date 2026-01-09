@@ -1,0 +1,177 @@
+.gallery-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.gallery-card:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  border-color: #d0d0d0;
+}
+
+.gallery-card-cover {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.gallery-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-card:hover .gallery-card-cover img {
+  transform: scale(1.05);
+}
+
+.gallery-card-content {
+  padding: 1.5rem;
+}
+
+.gallery-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-card-info {
+  margin-bottom: 1rem;
+}
+
+.gallery-info-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0.3rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.gallery-card-password {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fafafa;
+  padding: 0.7rem;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  margin: 1rem 0;
+}
+
+.password-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.password-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: white;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  flex: 1;
+}
+
+.copy-password-button {
+  background: white;
+  color: #1a1a1a;
+  border: 1px solid #d0d0d0;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-password-button:hover {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+}
+
+.gallery-expiry {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: #999;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.gallery-card-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.card-button {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 1px solid;
+  border-radius: 2px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.view-button {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+}
+
+.view-button:hover {
+  background: #333;
+  border-color: #333;
+  transform: translateY(-1px);
+}
+
+.delete-button {
+  background: white;
+  color: #d32f2f;
+  border-color: #d0d0d0;
+}
+
+.delete-button:hover {
+  background: #d32f2f;
+  color: white;
+  border-color: #d32f2f;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .gallery-card-actions {
+    flex-direction: column;
+  }
+
+  .card-button {
+    width: 100%;
+  }
+}

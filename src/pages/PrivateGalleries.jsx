@@ -1,65 +1,61 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { FiFolder, FiLock, FiCalendar, FiImage, FiEye, FiDownload, FiLogOut } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
+import { v4 as uuid } from 'uuid'
+import AdminDashboard from '../components/AdminDashboard'
+import GalleryUploader from '../components/GalleryUploader'
 import './PrivateGalleries.css'
+
+const ADMIN_PASSWORD = 'admin2026david'
+const STORAGE_KEY = 'galleries'
 
 function PrivateGalleries() {
   const [password, setPassword] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [selectedGallery, setSelectedGallery] = useState(null)
+  const [galleries, setGalleries] = useState([])
   const [error, setError] = useState('')
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [showUploader, setShowUploader] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
 
-  // Galeries exemple (en production, ceci viendrait d'une base de données)
-  const galleries = [
-    {
-      id: 1,
-      name: "Mariage Sarah & Antoine - Juin 2025",
-      password: "sarah2025",
-      date: "15 Juin 2025",
-      coverImage: `${import.meta.env.BASE_URL}images/slide1.jpg`,
-      photos: [
-        `${import.meta.env.BASE_URL}images/slide1.jpg`,
-        `${import.meta.env.BASE_URL}images/slide2.jpg`,
-        `${import.meta.env.BASE_URL}images/slide3.jpg`,
-        `${import.meta.env.BASE_URL}images/slide4.jpg`,
-        `${import.meta.env.BASE_URL}images/slide5.jpg`,
-      ]
-    },
-    {
-      id: 2,
-      name: "Séance Couple Élodie & Marc - Mars 2025",
-      password: "elodie2025",
-      date: "20 Mars 2025",
-      coverImage: `${import.meta.env.BASE_URL}images/slide2.jpg`,
-      photos: [
-        `${import.meta.env.BASE_URL}images/slide2.jpg`,
-        `${import.meta.env.BASE_URL}images/slide3.jpg`,
-        `${import.meta.env.BASE_URL}images/slide4.jpg`,
-        `${import.meta.env.BASE_URL}images/slide5.jpg`,
-        `${import.meta.env.BASE_URL}images/slide1.jpg`,
-      ]
-    },
-    {
-      id: 3,
-      name: "Événement Corporate - Janvier 2026",
-      password: "corporate2026",
-      date: "10 Janvier 2026",
-      coverImage: `${import.meta.env.BASE_URL}images/slide3.jpg`,
-      photos: [
-        `${import.meta.env.BASE_URL}images/slide3.jpg`,
-        `${import.meta.env.BASE_URL}images/slide4.jpg`,
-        `${import.meta.env.BASE_URL}images/slide5.jpg`,
-        `${import.meta.env.BASE_URL}images/slide1.jpg`,
-        `${import.meta.env.BASE_URL}images/slide2.jpg`,
-      ]
+  // Charger les galeries depuis localStorage au démarrage
+  useEffect(() => {
+    loadGalleries()
+  }, [])
+
+  const loadGalleries = () => {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      try {
+        setGalleries(JSON.parse(stored))
+      } catch (err) {
+        console.error('Error loading galleries:', err)
+      }
     }
-  ]
+  }
+
+  const saveGalleries = (updatedGalleries) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedGalleries))
+    setGalleries(updatedGalleries)
+  }
 
   const handleLogin = (e) => {
     e.preventDefault()
+    
+    // Vérifier si c'est le mot de passe admin
+    if (password === ADMIN_PASSWORD) {
+      setIsAdmin(true)
+      setIsAuthenticated(true)
+      setError('')
+      return
+    }
+    
+    // Sinon, chercher dans les galeries
     const gallery = galleries.find(g => g.password === password)
     
     if (gallery) {
@@ -74,9 +70,60 @@ function PrivateGalleries() {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
+    setIsAdmin(false)
     setSelectedGallery(null)
     setPassword('')
     setError('')
+    setSuccessMessage('')
+  }
+
+  const createGallery = (galleryData) => {
+    const newGallery = {
+      id: uuid(),
+      ...galleryData,
+      photos: [],
+      createdAt: new Date().toISOString()
+    }
+    
+    const updatedGalleries = [...galleries, newGallery]
+    saveGalleries(updatedGalleries)
+    setSuccessMessage('✅ Galerie créée avec succès !')
+    setTimeout(() => setSuccessMessage(''), 3000)
+  }
+
+  const deleteGallery = (galleryId) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette galerie ? Cette action est irréversible.')) {
+      const updatedGalleries = galleries.filter(g => g.id !== galleryId)
+      saveGalleries(updatedGalleries)
+      setSuccessMessage('✅ Galerie supprimée')
+      setTimeout(() => setSuccessMessage(''), 3000)
+    }
+  }
+
+  const handleSelectGalleryForView = (gallery) => {
+    setSelectedGallery(gallery)
+    setShowUploader(true)
+  }
+
+  const handleUploadComplete = (uploadedPhotos) => {
+    if (!selectedGallery) return
+
+    const updatedGalleries = galleries.map(g => {
+      if (g.id === selectedGallery.id) {
+        const updatedGallery = {
+          ...g,
+          photos: [...g.photos, ...uploadedPhotos],
+          coverImage: g.coverImage || uploadedPhotos[0]?.url
+        }
+        setSelectedGallery(updatedGallery)
+        return updatedGallery
+      }
+      return g
+    })
+
+    saveGalleries(updatedGalleries)
+    setSuccessMessage(`✅ ${uploadedPhotos.length} photo${uploadedPhotos.length > 1 ? 's' : ''} ajoutée${uploadedPhotos.length > 1 ? 's' : ''} !`)
+    setTimeout(() => setSuccessMessage(''), 3000)
   }
 
   const openLightbox = (index) => {
@@ -104,12 +151,25 @@ function PrivateGalleries() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="galleries-hero-title">Galeries Privées</h1>
+          <h1 className="galleries-hero-title">
+            {isAdmin ? 'Administration' : 'Galeries Privées'}
+          </h1>
           <p className="galleries-hero-subtitle">
-            Accédez à vos photos en toute sécurité
+            {isAdmin ? 'Gérez vos galeries privées' : 'Accédez à vos photos en toute sécurité'}
           </p>
         </motion.div>
       </section>
+
+      {successMessage && (
+        <motion.div 
+          className="success-toast"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          {successMessage}
+        </motion.div>
+      )}
 
       <div className="galleries-container">
         {!isAuthenticated ? (
@@ -121,7 +181,7 @@ function PrivateGalleries() {
             transition={{ duration: 0.6 }}
           >
             <div className="login-box">
-              <div className="login-icon">🔒</div>
+              <div className="login-icon"><FiLock size={48} strokeWidth={1.5} /></div>
               <h2>Accès Sécurisé</h2>
               <p className="login-description">
                 Entrez le mot de passe qui vous a été fourni par email pour accéder à votre galerie privée.
@@ -153,8 +213,17 @@ function PrivateGalleries() {
               </div>
             </div>
           </motion.section>
+        ) : isAdmin ? (
+          /* Admin Dashboard */
+          <AdminDashboard
+            galleries={galleries}
+            onCreateGallery={createGallery}
+            onDeleteGallery={deleteGallery}
+            onLogout={handleLogout}
+            onSelectGallery={handleSelectGalleryForView}
+          />
         ) : (
-          /* Gallery Display */
+          /* Gallery Display for Client */
           <motion.section 
             className="gallery-display"
             initial={{ opacity: 0 }}
@@ -164,11 +233,17 @@ function PrivateGalleries() {
             <div className="gallery-header">
               <div>
                 <h2>{selectedGallery.name}</h2>
-                <p className="gallery-date">📅 {selectedGallery.date}</p>
-                <p className="gallery-count">📸 {selectedGallery.photos.length} photos</p>
+                <p className="gallery-date">
+                  <FiCalendar size={16} /> {new Date(selectedGallery.date).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </p>
+                <p className="gallery-count"><FiImage size={16} /> {selectedGallery.photos.length} photos</p>
               </div>
               <button onClick={handleLogout} className="logout-button">
-                Déconnexion
+                <FiLogOut size={18} /> Déconnexion
               </button>
             </div>
 
@@ -178,48 +253,163 @@ function PrivateGalleries() {
               </p>
             </div>
 
-            <div className="gallery-grid">
-              {selectedGallery.photos.map((photo, index) => (
-                <motion.div
-                  key={index}
-                  className="gallery-photo"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                >
-                  <img 
-                    src={photo} 
-                    alt={`Photo ${index + 1}`}
-                    onClick={() => openLightbox(index)}
-                  />
-                  <div className="photo-overlay">
-                    <button 
-                      className="overlay-button view-button"
-                      onClick={() => openLightbox(index)}
-                    >
-                      👁️ Voir
-                    </button>
-                    <button 
-                      className="overlay-button download-button"
-                      onClick={() => downloadPhoto(photo, index)}
-                    >
-                      ⬇️ Télécharger
-                    </button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {selectedGallery.photos.length === 0 ? (
+              <div className="empty-gallery">
+                <p className="empty-icon"><FiImage size={80} strokeWidth={1} /></p>
+                <p>Aucune photo pour le moment. Revenez bientôt !</p>
+              </div>
+            ) : (
+              <>
+                {/* Extraire les catégories */}
+                {(() => {
+                  const categories = [...new Set(selectedGallery.photos.map(p => p.category).filter(Boolean))]
+                  const photosWithoutCategory = selectedGallery.photos.filter(p => !p.category)
+                  
+                  return categories.length > 0 ? (
+                    <>
+                      {categories.map(category => {
+                        const photosInCategory = selectedGallery.photos.filter(p => p.category === category)
+                        return (
+                          <div key={category} className="gallery-category-section">
+                            <h3 className="gallery-category-title"><FiFolder size={22} strokeWidth={1.5} /> {category}</h3>
+                            <div className="gallery-grid">
+                              {photosInCategory.map((photo, index) => {
+                                const globalIndex = selectedGallery.photos.indexOf(photo)
+                                return (
+                                  <motion.div
+                                    key={photo.id || index}
+                                    className="gallery-photo"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                                  >
+                                    <img 
+                                      src={photo.url || photo} 
+                                      alt={`Photo ${index + 1}`}
+                                      onClick={() => openLightbox(globalIndex)}
+                                    />
+                                    <div className="photo-overlay">
+                                      <button 
+                                        className="overlay-button view-button"
+                                        onClick={() => openLightbox(globalIndex)}
+                                      >
+                                        <FiEye size={18} /> Voir
+                                      </button>
+                                      <button 
+                                        className="overlay-button download-button"
+                                        onClick={() => downloadPhoto(photo.url || photo, globalIndex)}
+                                      >
+                                        <FiDownload size={18} /> Télécharger
+                                      </button>
+                                    </div>
+                                  </motion.div>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )
+                      })}
+                      
+                      {photosWithoutCategory.length > 0 && (
+                        <div className="gallery-category-section">
+                          <h3 className="gallery-category-title"><FiFolder size={22} strokeWidth={1.5} /> Autres photos</h3>
+                          <div className="gallery-grid">
+                            {photosWithoutCategory.map((photo, index) => {
+                              const globalIndex = selectedGallery.photos.indexOf(photo)
+                              return (
+                                <motion.div
+                                  key={photo.id || index}
+                                  className="gallery-photo"
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                                >
+                                  <img 
+                                    src={photo.url || photo} 
+                                    alt={`Photo ${index + 1}`}
+                                    onClick={() => openLightbox(globalIndex)}
+                                  />
+                                  <div className="photo-overlay">
+                                    <button 
+                                      className="overlay-button view-button"
+                                      onClick={() => openLightbox(globalIndex)}
+                                    >
+                                      <FiEye size={18} /> Voir
+                                    </button>
+                                    <button 
+                                      className="overlay-button download-button"
+                                      onClick={() => downloadPhoto(photo.url || photo, globalIndex)}
+                                    >
+                                      <FiDownload size={18} /> Télécharger
+                                    </button>
+                                  </div>
+                                </motion.div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="gallery-grid">
+                      {selectedGallery.photos.map((photo, index) => (
+                        <motion.div
+                          key={photo.id || index}
+                          className="gallery-photo"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.4, delay: index * 0.1 }}
+                        >
+                          <img 
+                            src={photo.url || photo} 
+                            alt={`Photo ${index + 1}`}
+                            onClick={() => openLightbox(index)}
+                          />
+                          <div className="photo-overlay">
+                            <button 
+                              className="overlay-button view-button"
+                              onClick={() => openLightbox(index)}
+                            >
+                              <FiEye size={18} /> Voir
+                            </button>
+                            <button 
+                              className="overlay-button download-button"
+                              onClick={() => downloadPhoto(photo.url || photo, index)}
+                            >
+                              <FiDownload size={18} /> Télécharger
+                            </button>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )
+                })()}
+              </>
+            )}
           </motion.section>
         )}
       </div>
 
+      {/* Gallery Uploader Modal */}
+      {showUploader && selectedGallery && (
+        <GalleryUploader
+          galleryId={selectedGallery.id}
+          galleryName={selectedGallery.name}
+          existingPhotos={selectedGallery.photos}
+          onUploadComplete={handleUploadComplete}
+          onClose={() => setShowUploader(false)}
+        />
+      )}
+
       {/* Lightbox */}
-      {selectedGallery && (
+      {selectedGallery && selectedGallery.photos.length > 0 && (
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}
           index={lightboxIndex}
-          slides={selectedGallery.photos.map(photo => ({ src: photo }))}
+          slides={selectedGallery.photos.map(photo => ({ 
+            src: photo.url || photo 
+          }))}
         />
       )}
     </div>

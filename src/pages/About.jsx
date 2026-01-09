@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { FiMapPin } from 'react-icons/fi'
 import './About.css'
 
 function About() {
@@ -55,7 +56,7 @@ function About() {
           <div className="portrait-intro">
             <h2>David Irie</h2>
             <p className="portrait-tagline">Photographe & Vidéaste</p>
-            <p className="portrait-location">📍 Basé à Abidjan, Côte d'Ivoire</p>
+            <p className="portrait-location"><FiMapPin size={16} /> Basé à Abidjan, Côte d'Ivoire</p>
           </div>
         </section>
 

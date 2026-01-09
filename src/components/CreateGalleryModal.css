@@ -1,0 +1,192 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #1a1a1a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.3s ease;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: #1a1a1a;
+  transform: rotate(90deg);
+}
+
+.gallery-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.password-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.password-input-group input {
+  flex: 1;
+}
+
+.generate-password-button {
+  background: #f0f0f0;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.generate-password-button:hover {
+  background: #e0e0e0;
+  transform: rotate(180deg);
+}
+
+.form-error {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancel-button,
+.submit-button {
+  flex: 1;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-button {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background: #e0e0e0;
+}
+
+.submit-button {
+  background: #1a1a1a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.submit-button:hover {
+  background: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 640px) {
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}

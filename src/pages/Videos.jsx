@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { FiPlay, FiFilm, FiVideo, FiCamera, FiMic } from 'react-icons/fi'
 import './Videos.css'
 
 function Videos() {
@@ -144,7 +145,7 @@ function Videos() {
               <div className="video-thumbnail">
                 <img src={video.thumbnail} alt={video.title} />
                 <div className="play-overlay">
-                  <div className="play-button">▶</div>
+                  <div className="play-button"><FiPlay size={40} /></div>
                 </div>
                 <div className="video-category-badge">{video.category}</div>
               </div>
@@ -162,19 +163,19 @@ function Videos() {
           <h2>Prestations Vidéo</h2>
           <div className="services-grid">
             <div className="service-item">
-              <h3>🎬 Film de Mariage</h3>
+              <h3><FiFilm size={24} strokeWidth={1.5} /> Film de Mariage</h3>
               <p>Documentaire complet de votre journée, monté avec musique et transitions cinématographiques.</p>
             </div>
             <div className="service-item">
-              <h3>🎥 Clip Highlights</h3>
+              <h3><FiVideo size={24} strokeWidth={1.5} /> Clip Highlights</h3>
               <p>Résumé dynamique de 3-5 minutes parfait pour les réseaux sociaux et le partage rapide.</p>
             </div>
             <div className="service-item">
-              <h3>🎞️ Multi-Caméras</h3>
+              <h3><FiCamera size={24} strokeWidth={1.5} /> Multi-Caméras</h3>
               <p>Couverture avec plusieurs angles pour capturer tous les moments importants simultanément.</p>
             </div>
             <div className="service-item">
-              <h3>🎙️ Interviews</h3>
+              <h3><FiMic size={24} strokeWidth={1.5} /> Interviews</h3>
               <p>Témoignages et vœux capturés en qualité studio pour enrichir votre film.</p>
             </div>
           </div>

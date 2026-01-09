@@ -17,6 +17,7 @@ exports.uploadToBackblaze = async (req, res) => {
   const allowedOrigins = [
     'https://david-irie-photographie-208603494308.europe-west1.run.app',
     'http://localhost:5173',
+    'http://localhost:5174',
     'http://localhost:4173'
   ];
   

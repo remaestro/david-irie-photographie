@@ -141,7 +141,7 @@ exports.sendEmail = async (req, res) => {
             </div>
             
             <div class="hero-image">
-              <img src="https://davidirie.netlify.app/images/bouquet-roses-1.jpg" alt="David Irie Photographie" />
+              <img src="https://david-irie-photographie-208603494308.europe-west1.run.app/images/bouquet-roses-1.jpg" alt="David Irie Photographie" />
             </div>
             
             <div class="content">

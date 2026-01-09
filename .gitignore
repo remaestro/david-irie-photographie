@@ -25,3 +25,6 @@ dist-ssr
 .env
 github-actions-key.json
 *.key.json
+
+# Local Netlify folder
+.netlify
