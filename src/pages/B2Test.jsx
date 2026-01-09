@@ -47,7 +47,7 @@ function B2Test() {
         });
 
         // Call Cloud Function to upload to B2
-        const response = await fetch('https://europe-west1-david-irie-photographie-208603494308.cloudfunctions.net/uploadToBackblaze', {
+        const response = await fetch('https://europe-west1-david-irie-photographie.cloudfunctions.net/uploadToBackblaze', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
