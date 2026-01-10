@@ -1,8 +1,12 @@
 steps:
-  # Build the container image
+  # Build the container image with build args
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
+      - '--build-arg'
+      - 'VITE_SUPABASE_URL=https://fjdkdoantfcwbnsqghlj.supabase.co'
+      - '--build-arg'
+      - 'VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqZGtkb2FudGZjd2Juc3FnaGxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5OTU2OTUsImV4cCI6MjA4MzU3MTY5NX0.qsUusyb3yvWE9C4386VhmHhOm4qaFTFmzAHR2a_S2c0'
       - '-t'
       - 'gcr.io/$PROJECT_ID/david-irie-photographie:$COMMIT_SHA'
       - '-t'

@@ -12,7 +12,15 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Build Vite app
+# Accept build arguments for Vite environment variables
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_ANON_KEY
+
+# Set them as environment variables for the build
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+
+# Build Vite app (env vars will be embedded in the build)
 RUN npm run build
 
 # Production stage
