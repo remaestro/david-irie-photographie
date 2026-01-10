@@ -18,10 +18,10 @@ echo ""
 echo "✅ Code poussé sur GitHub"
 echo ""
 
-# Déploiement automatique
-echo "🚀 Lancement du déploiement Cloud Run..."
+# Déploiement automatique via Cloud Build
+echo "🚀 Lancement du déploiement Cloud Run via Cloud Build..."
 echo ""
-./deploy.sh
+./deploy-cloud-build.sh
 
 echo ""
 echo "╔════════════════════════════════════════════╗"
