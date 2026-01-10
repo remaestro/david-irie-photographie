@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FiMapPin } from 'react-icons/fi'
+import { FiMapPin, FiPalette, FiHeart, FiStar } from 'react-icons/fi'
 import './About.css'
 
 function About() {
@@ -101,7 +101,7 @@ function About() {
         >
           <motion.div className="philosophy-grid">
             <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="philosophy-icon">🎨</div>
+              <div className="philosophy-icon"><FiPalette size={48} strokeWidth={1.5} /></div>
               <h3>Créativité</h3>
               <p>
                 Chaque séance est une toile blanche où j'exprime ma vision artistique tout en 
@@ -109,7 +109,7 @@ function About() {
               </p>
             </motion.div>
             <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="philosophy-icon">❤️</div>
+              <div className="philosophy-icon"><FiHeart size={48} strokeWidth={1.5} /></div>
               <h3>Authenticité</h3>
               <p>
                 Je privilégie les moments naturels et spontanés. Mes photos racontent des histoires 
@@ -117,7 +117,7 @@ function About() {
               </p>
             </motion.div>
             <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="philosophy-icon">⭐</div>
+              <div className="philosophy-icon"><FiStar size={48} strokeWidth={1.5} /></div>
               <h3>Excellence</h3>
               <p>
                 La qualité est au cœur de mon travail. Du shooting à la livraison finale, 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { FiInstagram, FiPalette, FiHeart, FiCamera } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import './App.css'
@@ -330,7 +331,7 @@ function App() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <div className="instagram-overlay-content">
-              <div className="instagram-icon">📷</div>
+              <div className="instagram-icon"><FiInstagram size={48} strokeWidth={1.5} /></div>
               <h3>Instagram</h3>
               <p>@davidiriephotographie</p>
             </div>

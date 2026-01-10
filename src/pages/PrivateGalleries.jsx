@@ -3,13 +3,12 @@ import { motion } from 'framer-motion'
 import { FiFolder, FiLock, FiCalendar, FiImage, FiEye, FiDownload, FiLogOut } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
-import { v4 as uuid } from 'uuid'
+import { getAllGalleries, getGalleryByPassword, createGallery as createGalleryDB, deleteGallery as deleteGalleryDB } from '../config/supabase'
 import AdminDashboard from '../components/AdminDashboard'
 import GalleryUploader from '../components/GalleryUploader'
 import './PrivateGalleries.css'
 
 const ADMIN_PASSWORD = 'admin2026david'
-const STORAGE_KEY = 'galleries'
 
 function PrivateGalleries() {
   const [password, setPassword] = useState('')
@@ -22,49 +21,59 @@ function PrivateGalleries() {
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [showUploader, setShowUploader] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  // Charger les galeries depuis localStorage au démarrage
+  // Charger les galeries depuis Supabase au démarrage (admin uniquement)
   useEffect(() => {
-    loadGalleries()
-  }, [])
+    if (isAdmin) {
+      loadGalleries()
+    }
+  }, [isAdmin])
 
-  const loadGalleries = () => {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) {
-      try {
-        setGalleries(JSON.parse(stored))
-      } catch (err) {
-        console.error('Error loading galleries:', err)
-      }
+  const loadGalleries = async () => {
+    setLoading(true)
+    try {
+      const data = await getAllGalleries()
+      setGalleries(data)
+    } catch (err) {
+      console.error('Error loading galleries:', err)
+      setError('Erreur lors du chargement des galeries')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const saveGalleries = (updatedGalleries) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedGalleries))
-    setGalleries(updatedGalleries)
-  }
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
+    setError('')
+    setLoading(true)
     
-    // Vérifier si c'est le mot de passe admin
-    if (password === ADMIN_PASSWORD) {
-      setIsAdmin(true)
-      setIsAuthenticated(true)
-      setError('')
-      return
-    }
-    
-    // Sinon, chercher dans les galeries
-    const gallery = galleries.find(g => g.password === password)
-    
-    if (gallery) {
-      setIsAuthenticated(true)
-      setSelectedGallery(gallery)
-      setError('')
-    } else {
-      setError('Mot de passe incorrect. Veuillez réessayer.')
+    try {
+      // Vérifier si c'est le mot de passe admin
+      if (password === ADMIN_PASSWORD) {
+        setIsAdmin(true)
+        setIsAuthenticated(true)
+        setLoading(false)
+        return
+      }
+      
+      // Sinon, chercher la galerie dans Supabase par mot de passe
+      const gallery = await getGalleryByPassword(password)
+      
+      if (gallery) {
+        setIsAuthenticated(true)
+        setSelectedGallery(gallery)
+        setError('')
+      } else {
+        setError('Mot de passe incorrect. Veuillez réessayer.')
+        setPassword('')
+      }
+    } catch (err) {
+      console.error('Login error:', err)
+      setError('Une erreur est survenue. Veuillez réessayer.')
       setPassword('')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -77,26 +86,46 @@ function PrivateGalleries() {
     setSuccessMessage('')
   }
 
-  const createGallery = (galleryData) => {
-    const newGallery = {
-      id: uuid(),
-      ...galleryData,
-      photos: [],
-      createdAt: new Date().toISOString()
+  const createGallery = async (galleryData) => {
+    setLoading(true)
+    try {
+      await createGalleryDB({
+        name: galleryData.name,
+        type: galleryData.type,
+        eventDate: galleryData.date,
+        password: galleryData.password,
+        expirationDate: galleryData.expirationDate
+      })
+      
+      setSuccessMessage('✅ Galerie créée avec succès !')
+      setTimeout(() => setSuccessMessage(''), 3000)
+      
+      // Recharger les galeries
+      await loadGalleries()
+    } catch (err) {
+      console.error('Error creating gallery:', err)
+      setError('Erreur lors de la création de la galerie')
+    } finally {
+      setLoading(false)
     }
-    
-    const updatedGalleries = [...galleries, newGallery]
-    saveGalleries(updatedGalleries)
-    setSuccessMessage('✅ Galerie créée avec succès !')
-    setTimeout(() => setSuccessMessage(''), 3000)
   }
 
-  const deleteGallery = (galleryId) => {
+  const deleteGallery = async (galleryId) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette galerie ? Cette action est irréversible.')) {
-      const updatedGalleries = galleries.filter(g => g.id !== galleryId)
-      saveGalleries(updatedGalleries)
-      setSuccessMessage('✅ Galerie supprimée')
-      setTimeout(() => setSuccessMessage(''), 3000)
+      setLoading(true)
+      try {
+        await deleteGalleryDB(galleryId)
+        setSuccessMessage('✅ Galerie supprimée')
+        setTimeout(() => setSuccessMessage(''), 3000)
+        
+        // Recharger les galeries
+        await loadGalleries()
+      } catch (err) {
+        console.error('Error deleting gallery:', err)
+        setError('Erreur lors de la suppression de la galerie')
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
@@ -105,25 +134,28 @@ function PrivateGalleries() {
     setShowUploader(true)
   }
 
-  const handleUploadComplete = (uploadedPhotos) => {
+  const handleUploadComplete = async (uploadedPhotos) => {
     if (!selectedGallery) return
 
-    const updatedGalleries = galleries.map(g => {
-      if (g.id === selectedGallery.id) {
-        const updatedGallery = {
-          ...g,
-          photos: [...g.photos, ...uploadedPhotos],
-          coverImage: g.coverImage || uploadedPhotos[0]?.url
-        }
+    setLoading(true)
+    try {
+      // Recharger les galeries pour obtenir les dernières données
+      await loadGalleries()
+      
+      // Mettre à jour la galerie sélectionnée
+      const updatedGallery = galleries.find(g => g.id === selectedGallery.id)
+      if (updatedGallery) {
         setSelectedGallery(updatedGallery)
-        return updatedGallery
       }
-      return g
-    })
-
-    saveGalleries(updatedGalleries)
-    setSuccessMessage(`✅ ${uploadedPhotos.length} photo${uploadedPhotos.length > 1 ? 's' : ''} ajoutée${uploadedPhotos.length > 1 ? 's' : ''} !`)
-    setTimeout(() => setSuccessMessage(''), 3000)
+      
+      setSuccessMessage(`✅ ${uploadedPhotos.length} photo${uploadedPhotos.length > 1 ? 's' : ''} ajoutée${uploadedPhotos.length > 1 ? 's' : ''} !`)
+      setTimeout(() => setSuccessMessage(''), 3000)
+    } catch (err) {
+      console.error('Error refreshing gallery:', err)
+      setError('Erreur lors du rafraîchissement')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const openLightbox = (index) => {
@@ -202,8 +234,8 @@ function PrivateGalleries() {
                 
                 {error && <p className="error-message">{error}</p>}
                 
-                <button type="submit" className="login-button">
-                  Accéder à ma galerie
+                <button type="submit" className="login-button" disabled={loading}>
+                  {loading ? 'Connexion...' : 'Accéder à ma galerie'}
                 </button>
               </form>
 
@@ -234,13 +266,13 @@ function PrivateGalleries() {
               <div>
                 <h2>{selectedGallery.name}</h2>
                 <p className="gallery-date">
-                  <FiCalendar size={16} /> {new Date(selectedGallery.date).toLocaleDateString('fr-FR', {
+                  <FiCalendar size={16} /> {new Date(selectedGallery.event_date).toLocaleDateString('fr-FR', {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric'
                   })}
                 </p>
-                <p className="gallery-count"><FiImage size={16} /> {selectedGallery.photos.length} photos</p>
+                <p className="gallery-count"><FiImage size={16} /> {selectedGallery.photos?.length || 0} photos</p>
               </div>
               <button onClick={handleLogout} className="logout-button">
                 <FiLogOut size={18} /> Déconnexion
@@ -253,7 +285,7 @@ function PrivateGalleries() {
               </p>
             </div>
 
-            {selectedGallery.photos.length === 0 ? (
+            {!selectedGallery.photos || selectedGallery.photos.length === 0 ? (
               <div className="empty-gallery">
                 <p className="empty-icon"><FiImage size={80} strokeWidth={1} /></p>
                 <p>Aucune photo pour le moment. Revenez bientôt !</p>
@@ -402,7 +434,7 @@ function PrivateGalleries() {
       )}
 
       {/* Lightbox */}
-      {selectedGallery && selectedGallery.photos.length > 0 && (
+      {selectedGallery && selectedGallery.photos && selectedGallery.photos.length > 0 && (
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}

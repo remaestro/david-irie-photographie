@@ -184,6 +184,9 @@
   font-weight: 400;
   margin: 0 0 1rem 0;
   color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .service-item p {
