@@ -152,10 +152,11 @@ function PrivateGalleries() {
       await addPhotosToGallery(selectedGallery.id, photosToAdd)
       
       // Recharger les galeries pour obtenir les dernières données
-      await loadGalleries()
+      const updatedGalleries = await getAllGalleries()
+      setGalleries(updatedGalleries)
       
-      // Mettre à jour la galerie sélectionnée
-      const updatedGallery = galleries.find(g => g.id === selectedGallery.id)
+      // Mettre à jour la galerie sélectionnée avec les nouvelles données
+      const updatedGallery = updatedGalleries.find(g => g.id === selectedGallery.id)
       if (updatedGallery) {
         setSelectedGallery(updatedGallery)
       }
