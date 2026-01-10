@@ -26,6 +26,7 @@ dist-ssr
 github-actions-key.json
 *.key.json
 cloudbuild.yaml
+.github/workflows/
 
 # Local Netlify folder
 .netlify
