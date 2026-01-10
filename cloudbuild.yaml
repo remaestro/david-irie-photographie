@@ -2,17 +2,16 @@ steps:
   # Build the container image with build args from secrets
   - name: 'gcr.io/cloud-builders/docker'
     secretEnv: ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY']
+    entrypoint: 'bash'
     args:
-      - 'build'
-      - '--build-arg'
-      - 'VITE_SUPABASE_URL=$$VITE_SUPABASE_URL'
-      - '--build-arg'
-      - 'VITE_SUPABASE_ANON_KEY=$$VITE_SUPABASE_ANON_KEY'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/david-irie-photographie:$COMMIT_SHA'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/david-irie-photographie:latest'
-      - '.'
+      - '-c'
+      - |
+        docker build \
+          --build-arg VITE_SUPABASE_URL="$$VITE_SUPABASE_URL" \
+          --build-arg VITE_SUPABASE_ANON_KEY="$$VITE_SUPABASE_ANON_KEY" \
+          -t gcr.io/$PROJECT_ID/david-irie-photographie:$COMMIT_SHA \
+          -t gcr.io/$PROJECT_ID/david-irie-photographie:latest \
+          .
 
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
