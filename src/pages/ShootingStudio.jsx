@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FiUser, FiPalette, FiUsers, FiPackage } from 'react-icons/fi'
+import { FiUser, FiAperture, FiUsers, FiPackage } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import './Portfolio.css'
@@ -96,7 +96,7 @@ function ShootingStudio() {
               <p>Photos d'entreprise, CV, LinkedIn avec fonds neutres et éclairage flattteur.</p>
             </div>
             <div className="service-item">
-              <h3><FiPalette size={24} strokeWidth={1.5} /> Créatif & Artistique</h3>
+              <h3><FiAperture size={24} strokeWidth={1.5} /> Créatif & Artistique</h3>
               <p>Séances conceptuelles avec décors, accessoires et éclairages créatifs.</p>
             </div>
             <div className="service-item">

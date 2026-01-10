@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiInstagram, FiPalette, FiHeart, FiCamera } from 'react-icons/fi'
+import { FiInstagram, FiAperture, FiHeart, FiCamera } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import './App.css'

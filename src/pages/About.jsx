@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FiMapPin, FiPalette, FiHeart, FiStar } from 'react-icons/fi'
+import { FiMapPin, FiAperture, FiHeart, FiStar } from 'react-icons/fi'
 import './About.css'
 
 function About() {
@@ -101,7 +101,7 @@ function About() {
         >
           <motion.div className="philosophy-grid">
             <motion.div className="philosophy-item" variants={fadeInUp} transition={{ duration: 0.5 }}>
-              <div className="philosophy-icon"><FiPalette size={48} strokeWidth={1.5} /></div>
+              <div className="philosophy-icon"><FiAperture size={48} strokeWidth={1.5} /></div>
               <h3>Créativité</h3>
               <p>
                 Chaque séance est une toile blanche où j'exprime ma vision artistique tout en 
