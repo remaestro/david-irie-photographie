@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { FiFolder, FiLock, FiCalendar, FiImage, FiEye, FiDownload, FiLogOut } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
-import { getAllGalleries, getGalleryByPassword, createGallery as createGalleryDB, deleteGallery as deleteGalleryDB } from '../config/supabase'
+import { getAllGalleries, getGalleryByPassword, createGallery as createGalleryDB, deleteGallery as deleteGalleryDB, addPhotosToGallery } from '../config/supabase'
 import AdminDashboard from '../components/AdminDashboard'
 import GalleryUploader from '../components/GalleryUploader'
 import './PrivateGalleries.css'
@@ -139,6 +139,18 @@ function PrivateGalleries() {
 
     setLoading(true)
     try {
+      // Enregistrer les photos dans Supabase
+      const photosToAdd = uploadedPhotos.map(photo => ({
+        filename: photo.fileName,
+        url: photo.url,
+        thumbnailUrl: photo.url, // Pas de thumbnail séparé pour le moment
+        size: null,
+        width: null,
+        height: null
+      }))
+      
+      await addPhotosToGallery(selectedGallery.id, photosToAdd)
+      
       // Recharger les galeries pour obtenir les dernières données
       await loadGalleries()
       

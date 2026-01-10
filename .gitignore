@@ -25,6 +25,7 @@ dist-ssr
 .env
 github-actions-key.json
 *.key.json
+cloudbuild.yaml
 
 # Local Netlify folder
 .netlify
