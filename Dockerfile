@@ -20,6 +20,10 @@ ARG VITE_SUPABASE_ANON_KEY
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
 ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
 
+# Debug: Print env vars (will show in build logs)
+RUN echo "DEBUG: VITE_SUPABASE_URL=${VITE_SUPABASE_URL}" && \
+    echo "DEBUG: VITE_SUPABASE_ANON_KEY length=$(echo -n ${VITE_SUPABASE_ANON_KEY} | wc -c)"
+
 # Build Vite app (env vars will be embedded in the build)
 RUN npm run build
 
