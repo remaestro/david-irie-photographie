@@ -1,0 +1,40 @@
+steps:
+  # Build avec les variables Supabase
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'VITE_SUPABASE_URL=https://fjdkdoantfcwbnsqghlj.supabase.co'
+      - '--build-arg'
+      - 'VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqZGtkb2FudGZjd2Juc3FnaGxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5OTU2OTUsImV4cCI6MjA4MzU3MTY5NX0.qsUusyb3yvWE9C4386VhmHhOm4qaFTFmzAHR2a_S2c0'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/david-irie-photographie:latest'
+      - '.'
+
+  # Push l'image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/david-irie-photographie:latest'
+
+  # Deploy sur Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'david-irie-photographie'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/david-irie-photographie:latest'
+      - '--region'
+      - 'europe-west1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/$PROJECT_ID/david-irie-photographie:latest'
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
