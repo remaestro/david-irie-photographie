@@ -154,6 +154,7 @@ export async function addPhotosToGallery(galleryId, photos) {
     filename: photo.filename,
     url: photo.url,
     thumbnail_url: photo.thumbnailUrl,
+    category: photo.category || null,
     size_bytes: photo.size,
     width: photo.width,
     height: photo.height,

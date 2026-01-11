@@ -43,6 +43,7 @@ CREATE TABLE photos (
   filename TEXT NOT NULL,
   url TEXT NOT NULL,
   thumbnail_url TEXT,
+  category TEXT,
   size_bytes INTEGER,
   width INTEGER,
   height INTEGER,
@@ -53,10 +54,12 @@ CREATE TABLE photos (
 -- Index pour performance
 CREATE INDEX idx_photos_gallery_id ON photos(gallery_id);
 CREATE INDEX idx_photos_order ON photos(gallery_id, order_index);
+CREATE INDEX idx_photos_category ON photos(category);
 
 -- Commentaires
 COMMENT ON TABLE photos IS 'Photos stockées sur Backblaze B2';
 COMMENT ON COLUMN photos.url IS 'URL publique Backblaze B2';
+COMMENT ON COLUMN photos.category IS 'Catégorie de la photo (ex: Entrée de la mariée, Cocktail, etc.)';
 
 -- ============================================
 -- TABLE: gallery_views (optionnel - analytics)

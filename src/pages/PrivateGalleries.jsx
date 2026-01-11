@@ -144,6 +144,7 @@ function PrivateGalleries() {
         filename: photo.fileName,
         url: photo.url,
         thumbnailUrl: photo.url, // Pas de thumbnail séparé pour le moment
+        category: photo.category || null,
         size: null,
         width: null,
         height: null
