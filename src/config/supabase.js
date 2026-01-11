@@ -35,6 +35,7 @@ export async function getAllGalleries() {
         id,
         url,
         thumbnail_url,
+        category,
         order_index
       )
     `)
