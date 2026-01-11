@@ -104,15 +104,63 @@ export async function createGallery(galleryData) {
 }
 
 /**
- * Supprimer une galerie
+ * Supprimer une galerie ET ses photos de Backblaze B2
  */
 export async function deleteGallery(galleryId) {
-  const { error } = await supabase
-    .from('galleries')
-    .delete()
-    .eq('id', galleryId)
+  try {
+    // 1. Récupérer toutes les photos de la galerie
+    const { data: photos, error: fetchError } = await supabase
+      .from('photos')
+      .select('id, url')
+      .eq('gallery_id', galleryId)
 
-  if (error) throw error
+    if (fetchError) throw fetchError
+
+    // 2. Supprimer chaque photo de Backblaze B2
+    if (photos && photos.length > 0) {
+      console.log(`🗑️ Suppression de ${photos.length} photo(s) de Backblaze B2...`)
+      
+      const deletePromises = photos.map(async (photo) => {
+        try {
+          const response = await fetch(
+            'https://europe-west1-david-irie-photographie.cloudfunctions.net/deleteFromBackblaze',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ fileUrl: photo.url })
+            }
+          )
+
+          if (!response.ok) {
+            console.warn(`⚠️ Erreur lors de la suppression de ${photo.url}`)
+          } else {
+            console.log(`✅ Photo supprimée de Backblaze: ${photo.url}`)
+          }
+        } catch (err) {
+          console.warn(`⚠️ Erreur Backblaze pour ${photo.url}:`, err)
+          // On continue même si une photo échoue
+        }
+      })
+
+      // Attendre que toutes les suppressions soient terminées
+      await Promise.all(deletePromises)
+    }
+
+    // 3. Supprimer la galerie de Supabase (les photos en DB seront supprimées automatiquement avec CASCADE)
+    const { error: deleteError } = await supabase
+      .from('galleries')
+      .delete()
+      .eq('id', galleryId)
+
+    if (deleteError) throw deleteError
+
+    console.log(`✅ Galerie ${galleryId} supprimée complètement (DB + Backblaze)`)
+  } catch (error) {
+    console.error('❌ Erreur lors de la suppression de la galerie:', error)
+    throw error
+  }
 }
 
 /**
@@ -182,15 +230,59 @@ export async function addPhotosToGallery(galleryId, photos) {
 }
 
 /**
- * Supprimer une photo
+ * Supprimer une photo ET son fichier de Backblaze B2
  */
 export async function deletePhoto(photoId) {
-  const { error } = await supabase
-    .from('photos')
-    .delete()
-    .eq('id', photoId)
+  try {
+    // 1. Récupérer l'URL de la photo avant de la supprimer
+    const { data: photo, error: fetchError } = await supabase
+      .from('photos')
+      .select('id, url')
+      .eq('id', photoId)
+      .single()
 
-  if (error) throw error
+    if (fetchError) throw fetchError
+
+    // 2. Supprimer le fichier de Backblaze B2
+    if (photo && photo.url) {
+      try {
+        console.log(`🗑️ Suppression de la photo de Backblaze B2: ${photo.url}`)
+        
+        const response = await fetch(
+          'https://europe-west1-david-irie-photographie.cloudfunctions.net/deleteFromBackblaze',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fileUrl: photo.url })
+          }
+        )
+
+        if (!response.ok) {
+          console.warn(`⚠️ Erreur lors de la suppression de Backblaze: ${photo.url}`)
+        } else {
+          console.log(`✅ Photo supprimée de Backblaze: ${photo.url}`)
+        }
+      } catch (err) {
+        console.warn(`⚠️ Erreur Backblaze pour ${photo.url}:`, err)
+        // On continue quand même pour supprimer de la DB
+      }
+    }
+
+    // 3. Supprimer la photo de Supabase
+    const { error: deleteError } = await supabase
+      .from('photos')
+      .delete()
+      .eq('id', photoId)
+
+    if (deleteError) throw deleteError
+
+    console.log(`✅ Photo ${photoId} supprimée complètement (DB + Backblaze)`)
+  } catch (error) {
+    console.error('❌ Erreur lors de la suppression de la photo:', error)
+    throw error
+  }
 }
 
 /**
