@@ -433,11 +433,6 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
             )}
           </div>
         )}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   )
