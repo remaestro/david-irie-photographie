@@ -62,21 +62,6 @@ COMMENT ON COLUMN photos.url IS 'URL publique Backblaze B2';
 COMMENT ON COLUMN photos.category IS 'Catégorie de la photo (ex: Entrée de la mariée, Cocktail, etc.)';
 
 -- ============================================
--- TABLE: gallery_views (optionnel - analytics)
--- Description: Tracking des consultations de galeries
--- ============================================
-CREATE TABLE gallery_views (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  gallery_id UUID NOT NULL REFERENCES galleries(id) ON DELETE CASCADE,
-  viewed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  user_agent TEXT,
-  ip_address INET
-);
-
-CREATE INDEX idx_gallery_views_gallery_id ON gallery_views(gallery_id);
-CREATE INDEX idx_gallery_views_viewed_at ON gallery_views(viewed_at DESC);
-
--- ============================================
 -- FONCTION: Auto-update updated_at
 -- ============================================
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -193,3 +178,39 @@ VALUES
   ('GALLERY_ID_HERE', 'photo1.jpg', 'https://f005.backblazeb2.com/file/david-irie-photo/test/photo1.jpg', 524288),
   ('GALLERY_ID_HERE', 'photo2.jpg', 'https://f005.backblazeb2.com/file/david-irie-photo/test/photo2.jpg', 612352);
 */
+
+-- ============================================
+-- TABLE: gallery_categories
+-- Description: Catégories définies par l'admin pour organiser les photos
+-- ============================================
+CREATE TABLE gallery_categories (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  gallery_id UUID NOT NULL REFERENCES galleries(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  order_index INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(gallery_id, name)
+);
+
+-- Index pour performance
+CREATE INDEX idx_gallery_categories_gallery_id ON gallery_categories(gallery_id);
+CREATE INDEX idx_gallery_categories_order ON gallery_categories(gallery_id, order_index);
+
+-- Commentaire
+COMMENT ON TABLE gallery_categories IS 'Catégories définies par l''admin pour organiser les photos';
+COMMENT ON COLUMN gallery_categories.name IS 'Nom de la catégorie (ex: Entrée de la mariée, Cocktail)';
+
+-- ============================================
+-- TABLE: gallery_views (optionnel - analytics)
+-- Description: Tracking des consultations de galeries
+-- ============================================
+CREATE TABLE gallery_views (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  gallery_id UUID NOT NULL REFERENCES galleries(id) ON DELETE CASCADE,
+  viewed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  user_agent TEXT,
+  ip_address INET
+);
+
+CREATE INDEX idx_gallery_views_gallery_id ON gallery_views(gallery_id);
+CREATE INDEX idx_gallery_views_viewed_at ON gallery_views(viewed_at DESC);

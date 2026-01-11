@@ -206,3 +206,50 @@ export async function getGalleryPhotos(galleryId) {
   if (error) throw error
   return data
 }
+
+// ============================================
+// CATÉGORIES
+// ============================================
+
+/**
+ * Récupérer les catégories d'une galerie
+ */
+export async function getGalleryCategories(galleryId) {
+  const { data, error } = await supabase
+    .from('gallery_categories')
+    .select('*')
+    .eq('gallery_id', galleryId)
+    .order('order_index')
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Ajouter une catégorie à une galerie
+ */
+export async function addCategory(galleryId, categoryName) {
+  const { data, error } = await supabase
+    .from('gallery_categories')
+    .insert([{
+      gallery_id: galleryId,
+      name: categoryName,
+      order_index: 0
+    }])
+    .select()
+
+  if (error) throw error
+  return data[0]
+}
+
+/**
+ * Supprimer une catégorie
+ */
+export async function deleteCategory(categoryId) {
+  const { error } = await supabase
+    .from('gallery_categories')
+    .delete()
+    .eq('id', categoryId)
+
+  if (error) throw error
+}

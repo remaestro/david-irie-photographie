@@ -499,3 +499,71 @@
     padding: 0.4rem 0.8rem;
   }
 }
+
+/* Category management */
+.category-btn-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.category-delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.category-delete-btn:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.category-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.empty-category {
+  color: #666;
+  font-style: italic;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Photo delete button */
+.existing-photo-item {
+  position: relative;
+}
+
+.delete-photo-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.existing-photo-item:hover .delete-photo-btn {
+  opacity: 1;
+}
+
+.delete-photo-btn:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}

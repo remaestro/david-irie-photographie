@@ -443,6 +443,18 @@ function PrivateGalleries() {
           galleryName={selectedGallery.name}
           existingPhotos={selectedGallery.photos}
           onUploadComplete={handleUploadComplete}
+          onPhotoDeleted={async () => {
+            const updatedGalleries = await getAllGalleries()
+            setGalleries(updatedGalleries)
+            const updatedGallery = updatedGalleries.find(g => g.id === selectedGallery.id)
+            if (updatedGallery) setSelectedGallery(updatedGallery)
+          }}
+          onCategoryChanged={async () => {
+            const updatedGalleries = await getAllGalleries()
+            setGalleries(updatedGalleries)
+            const updatedGallery = updatedGalleries.find(g => g.id === selectedGallery.id)
+            if (updatedGallery) setSelectedGallery(updatedGallery)
+          }}
           onClose={() => setShowUploader(false)}
         />
       )}
