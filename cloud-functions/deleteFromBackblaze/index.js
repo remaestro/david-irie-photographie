@@ -22,8 +22,8 @@ exports.deleteFromBackblaze = async (req, res) => {
   ];
   
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin) || !origin) {
-    res.set('Access-Control-Allow-Origin', origin || '*');
+  if (allowedOrigins.includes(origin)) {
+    res.set('Access-Control-Allow-Origin', origin);
   }
   
   res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -48,11 +48,28 @@ exports.deleteFromBackblaze = async (req, res) => {
     }
 
     // Extraire le nom du fichier de l'URL
-    // Format: https://s3.us-west-004.backblazeb2.com/david-irie-photographie/galleries/XXX/filename.jpg
+    // Format possible 1: https://bucket-name.s3.us-west-004.backblazeb2.com/galeries/XXX/filename.jpg
+    // Format possible 2: https://s3.us-west-004.backblazeb2.com/bucket-name/galeries/XXX/filename.jpg
     const url = new URL(fileUrl);
-    const key = url.pathname.substring(1); // Remove leading /
+    let key;
     
-    console.log('Deleting file:', key);
+    // Si le bucket est dans le hostname (bucket-name.s3.endpoint.com)
+    if (url.hostname.startsWith(process.env.B2_BUCKET_NAME)) {
+      key = url.pathname.substring(1); // Remove leading /
+    } else {
+      // Si le bucket est dans le path (/bucket-name/galeries/...)
+      const pathParts = url.pathname.substring(1).split('/');
+      if (pathParts[0] === process.env.B2_BUCKET_NAME) {
+        key = pathParts.slice(1).join('/'); // Remove bucket name from path
+      } else {
+        key = url.pathname.substring(1); // Fallback
+      }
+    }
+    
+    console.log('🗑️ Deleting file from Backblaze B2:');
+    console.log('  - URL:', fileUrl);
+    console.log('  - Bucket:', process.env.B2_BUCKET_NAME);
+    console.log('  - Key:', key);
 
     const command = new DeleteObjectCommand({
       Bucket: process.env.B2_BUCKET_NAME,
@@ -61,7 +78,7 @@ exports.deleteFromBackblaze = async (req, res) => {
 
     await s3Client.send(command);
 
-    console.log('File deleted successfully:', key);
+    console.log('✅ File deleted successfully from B2:', key);
     
     return res.status(200).json({ 
       success: true, 
@@ -70,10 +87,16 @@ exports.deleteFromBackblaze = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error deleting file from Backblaze:', error);
+    console.error('❌ Error deleting file from Backblaze:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      statusCode: error.$metadata?.httpStatusCode
+    });
     return res.status(500).json({ 
       error: 'Failed to delete file',
-      details: error.message 
+      details: error.message,
+      code: error.code
     });
   }
 };

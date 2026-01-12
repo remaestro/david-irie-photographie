@@ -118,6 +118,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  position: relative;
 }
 
 .category-btn:hover:not(:disabled) {
@@ -566,4 +567,39 @@
 .delete-photo-btn:hover {
   background: rgba(220, 38, 38, 1);
   transform: scale(1.1);
+}
+
+.delete-category-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.delete-category-btn:hover:not(:disabled) {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.2);
+}
+
+.delete-category-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.category-btn.active .delete-category-btn {
+  color: white;
+}
+
+.category-btn.active .delete-category-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
 }

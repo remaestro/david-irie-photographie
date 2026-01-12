@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import imageCompression from 'browser-image-compression'
 import { v4 as uuid } from 'uuid'
@@ -9,12 +9,17 @@ import {
   FiFolderPlus, 
   FiCheck, 
   FiImage,
-  FiClock 
+  FiClock,
+  FiTrash2,
+  FiEdit2
 } from 'react-icons/fi'
+import { deletePhoto, getGalleryCategories, addCategory, deleteCategory, updatePhotoCategory } from '../config/supabase'
 import './GalleryUploader.css'
 
-function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUploadComplete, onClose }) {
+function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUploadComplete, onPhotoDeleted, onCategoryChanged, onClose }) {
   const [uploading, setUploading] = useState(false)
+  const [deleting, setDeleting] = useState(null)
+  const [deletingCategory, setDeletingCategory] = useState(null)
   const [progress, setProgress] = useState({ current: 0, total: 0 })
   const [previews, setPreviews] = useState([])
   const [error, setError] = useState('')
@@ -22,10 +27,91 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
   const [selectedCategory, setSelectedCategory] = useState('')
   const [newCategory, setNewCategory] = useState('')
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false)
+  const [categories, setCategories] = useState([])
 
-  // Extraire les catégories existantes des photos + garder les nouvelles créées
-  const existingCategoriesFromPhotos = [...new Set(existingPhotos.map(p => p.category).filter(Boolean))]
-  const [allCategories, setAllCategories] = useState(existingCategoriesFromPhotos)
+  // Charger les catégories depuis la base de données
+  useEffect(() => {
+    loadCategories()
+  }, [galleryId])
+
+  const loadCategories = async () => {
+    try {
+      const dbCategories = await getGalleryCategories(galleryId)
+      setCategories(dbCategories)
+    } catch (err) {
+      console.error('Error loading categories:', err)
+    }
+  }
+
+  const handleDeleteCategory = async (categoryId, categoryName) => {
+    // Vérifier s'il y a des photos dans cette catégorie
+    const photosInCategory = existingPhotos.filter(p => p.category === categoryName)
+    
+    if (photosInCategory.length > 0) {
+      if (!confirm(`Cette catégorie contient ${photosInCategory.length} photo(s).\n\nSi vous supprimez cette catégorie, les photos garderont le nom de la catégorie mais elle ne sera plus proposée.\n\nContinuer ?`)) {
+        return
+      }
+    } else {
+      if (!confirm(`Supprimer la catégorie "${categoryName}" ?\n\nCette action est irréversible.`)) {
+        return
+      }
+    }
+
+    setDeletingCategory(categoryId)
+    setError('')
+    
+    try {
+      // Supprimer la catégorie
+      await deleteCategory(categoryId)
+      
+      setSuccess(`✅ Catégorie "${categoryName}" supprimée`)
+      setTimeout(() => setSuccess(''), 3000)
+      
+      // Recharger les catégories
+      await loadCategories()
+      
+      // Notifier le parent
+      if (onCategoryChanged) {
+        onCategoryChanged()
+      }
+    } catch (err) {
+      console.error('Error deleting category:', err)
+      setError(`❌ Erreur lors de la suppression: ${err.message}`)
+    } finally {
+      setDeletingCategory(null)
+    }
+  }
+
+  const handleCreateNewCategory = async () => {
+    if (newCategory.trim()) {
+      const categoryName = newCategory.trim()
+      
+      // Vérifier si la catégorie existe déjà
+      if (categories.some(cat => cat.name === categoryName)) {
+        setError('Cette catégorie existe déjà')
+        setTimeout(() => setError(''), 3000)
+        return
+      }
+      
+      try {
+        // Ajouter la catégorie dans la base de données
+        await addCategory(galleryId, categoryName)
+        
+        // Recharger les catégories
+        await loadCategories()
+        
+        setSelectedCategory(categoryName)
+        setShowNewCategoryInput(false)
+        setNewCategory('')
+        
+        setSuccess(`✅ Catégorie "${categoryName}" créée`)
+        setTimeout(() => setSuccess(''), 3000)
+      } catch (err) {
+        console.error('Error creating category:', err)
+        setError(`❌ Erreur lors de la création: ${err.message}`)
+      }
+    }
+  }
 
   const uploadToB2 = async (file, fileName) => {
     // Compression
@@ -73,16 +159,28 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
     setNewCategory('')
   }
 
-  const handleCreateNewCategory = () => {
-    if (newCategory.trim()) {
-      const categoryName = newCategory.trim()
-      setSelectedCategory(categoryName)
-      // Ajouter la nouvelle catégorie à la liste
-      if (!allCategories.includes(categoryName)) {
-        setAllCategories([...allCategories, categoryName])
+  const handleDeletePhoto = async (photo) => {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer cette photo ?\n\nCette action supprimera la photo de Backblaze B2 ET de la base de données.\n\nCette action est irréversible.`)) {
+      return
+    }
+
+    setDeleting(photo.id)
+    setError('')
+    
+    try {
+      await deletePhoto(photo.id)
+      setSuccess('✅ Photo supprimée avec succès (Backblaze + DB)')
+      setTimeout(() => setSuccess(''), 3000)
+      
+      // Notifier le parent pour rafraîchir la galerie
+      if (onPhotoDeleted) {
+        onPhotoDeleted()
       }
-      setShowNewCategoryInput(false)
-      setNewCategory('')
+    } catch (err) {
+      console.error('Error deleting photo:', err)
+      setError(`❌ Erreur lors de la suppression: ${err.message}`)
+    } finally {
+      setDeleting(null)
     }
   }
 
@@ -90,7 +188,7 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
     if (acceptedFiles.length === 0) return
 
     // Vérifier si une catégorie est sélectionnée
-    if (!selectedCategory && allCategories.length > 0) {
+    if (!selectedCategory && categories.length > 0) {
       setError('Veuillez sélectionner une catégorie avant d\'uploader des photos')
       return
     }
@@ -141,7 +239,7 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
       setSuccess(`✅ ${uploadedPhotos.length}/${acceptedFiles.length} photo${uploadedPhotos.length > 1 ? 's' : ''} uploadée${uploadedPhotos.length > 1 ? 's' : ''} avec succès !`)
       onUploadComplete(uploadedPhotos)
     }
-  }, [galleryId, selectedCategory, allCategories.length, onUploadComplete])
+  }, [galleryId, selectedCategory, categories.length, onUploadComplete])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -167,15 +265,23 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
           <label className="category-label"><FiFolder size={18} /> Catégorie des photos</label>
           
           <div className="category-buttons">
-            {allCategories.map(cat => (
+            {categories.map(cat => (
               <button
-                key={cat}
+                key={cat.id}
                 type="button"
-                className={`category-btn ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => handleCategorySelect(cat)}
+                className={`category-btn ${selectedCategory === cat.name ? 'active' : ''}`}
+                onClick={() => handleCategorySelect(cat.name)}
                 disabled={uploading}
               >
-                {cat}
+                {cat.name}
+                <button
+                  type="button"
+                  className="delete-category-btn"
+                  onClick={() => handleDeleteCategory(cat.id, cat.name)}
+                  disabled={deletingCategory === cat.id}
+                >
+                  <FiTrash2 size={16} />
+                </button>
               </button>
             ))}
             
@@ -295,16 +401,23 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
             <h3><FiImage size={20} /> Photos dans cette galerie ({existingPhotos.length})</h3>
             
             {/* Grouper les photos par catégorie */}
-            {existingCategoriesFromPhotos.length > 0 ? (
-              existingCategoriesFromPhotos.map(category => {
-                const photosInCategory = existingPhotos.filter(p => p.category === category)
+            {categories.length > 0 ? (
+              categories.map(category => {
+                const photosInCategory = existingPhotos.filter(p => p.category === category.name)
                 return (
-                  <div key={category} className="category-group">
-                    <h4 className="category-group-title"><FiFolder size={18} /> {category} ({photosInCategory.length})</h4>
+                  <div key={category.id} className="category-group">
+                    <h4 className="category-group-title"><FiFolder size={18} /> {category.name} ({photosInCategory.length})</h4>
                     <div className="existing-photos-grid">
                       {photosInCategory.map((photo, index) => (
                         <div key={photo.id || index} className="existing-photo-item">
                           <img src={photo.url || photo} alt={`Photo ${index + 1}`} />
+                          <button
+                            className="delete-photo-btn"
+                            onClick={() => handleDeletePhoto(photo)}
+                            disabled={deleting === photo.id}
+                          >
+                            <FiTrash2 size={18} />
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -316,6 +429,13 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
                 {existingPhotos.map((photo, index) => (
                   <div key={photo.id || index} className="existing-photo-item">
                     <img src={photo.url || photo} alt={`Photo ${index + 1}`} />
+                    <button
+                      className="delete-photo-btn"
+                      onClick={() => handleDeletePhoto(photo)}
+                      disabled={deleting === photo.id}
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -329,6 +449,13 @@ function GalleryUploader({ galleryId, galleryName, existingPhotos = [], onUpload
                   {existingPhotos.filter(p => !p.category).map((photo, index) => (
                     <div key={photo.id || index} className="existing-photo-item">
                       <img src={photo.url || photo} alt={`Photo ${index + 1}`} />
+                      <button
+                        className="delete-photo-btn"
+                        onClick={() => handleDeletePhoto(photo)}
+                        disabled={deleting === photo.id}
+                      >
+                        <FiTrash2 size={18} />
+                      </button>
                     </div>
                   ))}
                 </div>

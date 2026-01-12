@@ -62,7 +62,8 @@ export async function getGalleryByPassword(password) {
         size_bytes,
         width,
         height,
-        order_index
+        order_index,
+        category
       )
     `)
     .eq('password', password)
@@ -328,6 +329,20 @@ export async function addCategory(galleryId, categoryName) {
       name: categoryName,
       order_index: 0
     }])
+    .select()
+
+  if (error) throw error
+  return data[0]
+}
+
+/**
+ * Mettre à jour la catégorie d'une photo
+ */
+export async function updatePhotoCategory(photoId, category) {
+  const { data, error } = await supabase
+    .from('photos')
+    .update({ category: category })
+    .eq('id', photoId)
     .select()
 
   if (error) throw error

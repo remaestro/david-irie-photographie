@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { FiFolder, FiLock, FiCalendar, FiImage, FiEye, FiDownload, FiLogOut } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
-import { getAllGalleries, getGalleryByPassword, createGallery as createGalleryDB, deleteGallery as deleteGalleryDB, addPhotosToGallery } from '../config/supabase'
+import { getAllGalleries, getGalleryByPassword, createGallery as createGalleryDB, deleteGallery as deleteGalleryDB, addPhotosToGallery, getGalleryCategories } from '../config/supabase'
 import AdminDashboard from '../components/AdminDashboard'
 import GalleryUploader from '../components/GalleryUploader'
 import './PrivateGalleries.css'
@@ -22,6 +22,7 @@ function PrivateGalleries() {
   const [showUploader, setShowUploader] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [galleryCategories, setGalleryCategories] = useState([])
 
   // Charger les galeries depuis Supabase au démarrage (admin uniquement)
   useEffect(() => {
@@ -63,6 +64,16 @@ function PrivateGalleries() {
       if (gallery) {
         setIsAuthenticated(true)
         setSelectedGallery(gallery)
+        
+        // Charger les catégories de cette galerie
+        try {
+          const categories = await getGalleryCategories(gallery.id)
+          setGalleryCategories(categories)
+        } catch (err) {
+          console.error('Error loading categories:', err)
+          setGalleryCategories([])
+        }
+        
         setError('')
       } else {
         setError('Mot de passe incorrect. Veuillez réessayer.')
@@ -306,18 +317,21 @@ function PrivateGalleries() {
               </div>
             ) : (
               <>
-                {/* Extraire les catégories */}
-                {(() => {
-                  const categories = [...new Set(selectedGallery.photos.map(p => p.category).filter(Boolean))]
-                  const photosWithoutCategory = selectedGallery.photos.filter(p => !p.category)
-                  
-                  return categories.length > 0 ? (
-                    <>
-                      {categories.map(category => {
-                        const photosInCategory = selectedGallery.photos.filter(p => p.category === category)
+                {/* Afficher les photos groupées par catégories depuis gallery_categories */}
+                {galleryCategories.length > 0 ? (
+                  <>
+                    {galleryCategories
+                      .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
+                      .map(category => {
+                        const photosInCategory = selectedGallery.photos.filter(p => p.category === category.name)
+                        
+                        if (photosInCategory.length === 0) return null
+                        
                         return (
-                          <div key={category} className="gallery-category-section">
-                            <h3 className="gallery-category-title"><FiFolder size={22} strokeWidth={1.5} /> {category}</h3>
+                          <div key={category.id} className="gallery-category-section">
+                            <h3 className="gallery-category-title">
+                              <FiFolder size={22} strokeWidth={1.5} /> {category.name}
+                            </h3>
                             <div className="gallery-grid">
                               {photosInCategory.map((photo, index) => {
                                 const globalIndex = selectedGallery.photos.indexOf(photo)
@@ -355,10 +369,19 @@ function PrivateGalleries() {
                           </div>
                         )
                       })}
+                    
+                    {/* Photos sans catégorie */}
+                    {(() => {
+                      const categoryNames = galleryCategories.map(c => c.name)
+                      const photosWithoutCategory = selectedGallery.photos.filter(p => !p.category || !categoryNames.includes(p.category))
                       
-                      {photosWithoutCategory.length > 0 && (
+                      if (photosWithoutCategory.length === 0) return null
+                      
+                      return (
                         <div className="gallery-category-section">
-                          <h3 className="gallery-category-title"><FiFolder size={22} strokeWidth={1.5} /> Autres photos</h3>
+                          <h3 className="gallery-category-title">
+                            <FiFolder size={22} strokeWidth={1.5} /> Autres photos
+                          </h3>
                           <div className="gallery-grid">
                             {photosWithoutCategory.map((photo, index) => {
                               const globalIndex = selectedGallery.photos.indexOf(photo)
@@ -394,42 +417,43 @@ function PrivateGalleries() {
                             })}
                           </div>
                         </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="gallery-grid">
-                      {selectedGallery.photos.map((photo, index) => (
-                        <motion.div
-                          key={photo.id || index}
-                          className="gallery-photo"
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.4, delay: index * 0.1 }}
-                        >
-                          <img 
-                            src={photo.url || photo} 
-                            alt={`Photo ${index + 1}`}
+                      )
+                    })()}
+                  </>
+                ) : (
+                  /* Pas de catégories : afficher toutes les photos */
+                  <div className="gallery-grid">
+                    {selectedGallery.photos.map((photo, index) => (
+                      <motion.div
+                        key={photo.id || index}
+                        className="gallery-photo"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                      >
+                        <img 
+                          src={photo.url || photo} 
+                          alt={`Photo ${index + 1}`}
+                          onClick={() => openLightbox(index)}
+                        />
+                        <div className="photo-overlay">
+                          <button 
+                            className="overlay-button view-button"
                             onClick={() => openLightbox(index)}
-                          />
-                          <div className="photo-overlay">
-                            <button 
-                              className="overlay-button view-button"
-                              onClick={() => openLightbox(index)}
-                            >
-                              <FiEye size={18} /> Voir
-                            </button>
-                            <button 
-                              className="overlay-button download-button"
-                              onClick={() => downloadPhoto(photo.url || photo, index)}
-                            >
-                              <FiDownload size={18} /> Télécharger
-                            </button>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  )
-                })()}
+                          >
+                            <FiEye size={18} /> Voir
+                          </button>
+                          <button 
+                            className="overlay-button download-button"
+                            onClick={() => downloadPhoto(photo.url || photo, index)}
+                          >
+                            <FiDownload size={18} /> Télécharger
+                          </button>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </motion.section>
