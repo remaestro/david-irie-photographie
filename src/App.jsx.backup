@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiInstagram, FiAperture, FiHeart, FiCamera, FiEdit, FiLogOut } from 'react-icons/fi'
+import { FiInstagram, FiAperture, FiHeart, FiCamera } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import './App.css'
 import useSitePhotos from './hooks/useSitePhotos'
 import EditableImage from './components/EditableImage'
-import { useAdmin } from './contexts/AdminContext'
 
 function App() {
   const [activeDropdown, setActiveDropdown] = useState(null)
@@ -17,9 +16,6 @@ function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const observerRef = useRef(null)
-  
-  // Admin context
-  const { isAdmin, isEditMode, logout, toggleEditMode } = useAdmin()
   
   // Load site photos from Supabase
   const { photos, loading } = useSitePhotos()
@@ -198,29 +194,6 @@ function App() {
             <Link to="/formations" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Formations</Link>
             <Link to="/galeries-privees" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Galeries privées</Link>
             <Link to="/contact" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
-            
-            {/* Admin Controls - Visible uniquement si connecté */}
-            {isAdmin && (
-              <>
-                <button
-                  className={`nav-link admin-edit-btn ${isEditMode ? 'active' : ''}`}
-                  onClick={toggleEditMode}
-                >
-                  <FiEdit size={16} />
-                  {isEditMode ? 'Quitter édition' : 'Mode édition'}
-                </button>
-                <button
-                  className="nav-link admin-logout-btn"
-                  onClick={() => {
-                    logout()
-                    setMobileMenuOpen(false)
-                  }}
-                >
-                  <FiLogOut size={16} />
-                  Déconnexion
-                </button>
-              </>
-            )}
           </nav>
           <div className="header-spacer"></div>
         </div>
@@ -499,7 +472,7 @@ function App() {
         <p>All content Copyright © 2026 DAVID IRIE PHOTOGRAPHIE</p>
       </footer>
 
-      {/* Lightbox */}
+      {/* Lightbox */
       <Lightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}

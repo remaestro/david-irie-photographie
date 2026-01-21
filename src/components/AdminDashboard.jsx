@@ -1,12 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FiPaperclip, FiPlus, FiLogOut, FiImage } from 'react-icons/fi'
+import { useAdmin } from '../contexts/AdminContext'
 import CreateGalleryModal from './CreateGalleryModal'
 import GalleryCard from './GalleryCard'
 import './AdminDashboard.css'
 
-function AdminDashboard({ galleries, onCreateGallery, onDeleteGallery, onLogout, onSelectGallery }) {
+function AdminDashboard({ galleries = [], onCreateGallery, onDeleteGallery, onLogout, onSelectGallery }) {
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const { isAdmin, logout } = useAdmin()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/admin')
+    }
+  }, [isAdmin, navigate])
+
+  const handleLogout = () => {
+    logout()
+    if (onLogout) onLogout()
+    navigate('/admin')
+  }
+
+  if (!isAdmin) {
+    return null
+  }
 
   return (
     <div className="admin-dashboard">
@@ -29,7 +49,7 @@ function AdminDashboard({ galleries, onCreateGallery, onDeleteGallery, onLogout,
           </button>
           <button 
             className="logout-button"
-            onClick={onLogout}
+            onClick={handleLogout}
           >
             <FiLogOut size={18} /> Déconnexion
           </button>

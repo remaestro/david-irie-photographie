@@ -4,6 +4,7 @@
   background-color: #fafafa;
   opacity: 0;
   transition: opacity 0.6s ease-in;
+  padding-top: 70px; /* Space for fixed header */
 }
 
 .videos-page.fade-in {
@@ -18,8 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-}
+  position: relative;  z-index: 1;}
 
 .videos-hero-overlay {
   text-align: center;

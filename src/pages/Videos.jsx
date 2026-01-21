@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FiPlay, FiFilm, FiVideo, FiCamera, FiMic } from 'react-icons/fi'
+import PageHeader from '../components/PageHeader'
 import './Videos.css'
 
 function Videos() {
@@ -83,6 +84,7 @@ function Videos() {
 
   return (
     <div className={`videos-page ${fadeIn ? 'fade-in' : ''}`}>
+      <PageHeader />
       {/* Hero Section */}
       <section className="videos-hero">
         <div className="videos-hero-overlay">

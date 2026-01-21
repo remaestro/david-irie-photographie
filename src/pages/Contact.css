@@ -2,6 +2,7 @@
 .contact-page {
   min-height: 100vh;
   background-color: #fafafa;
+  padding-top: 70px; /* Space for fixed header */
 }
 
 /* Hero Section */
@@ -12,6 +13,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .contact-hero-content {

@@ -6,6 +6,7 @@ import 'yet-another-react-lightbox/styles.css'
 import { getAllGalleries, getGalleryByPassword, createGallery as createGalleryDB, deleteGallery as deleteGalleryDB, addPhotosToGallery, getGalleryCategories } from '../config/supabase'
 import AdminDashboard from '../components/AdminDashboard'
 import GalleryUploader from '../components/GalleryUploader'
+import PageHeader from '../components/PageHeader'
 import './PrivateGalleries.css'
 
 const ADMIN_PASSWORD = 'admin2026david'
@@ -200,6 +201,7 @@ function PrivateGalleries() {
 
   return (
     <div className="private-galleries-page">
+      <PageHeader />
       {/* Hero Section */}
       <section className="galleries-hero">
         <motion.div 

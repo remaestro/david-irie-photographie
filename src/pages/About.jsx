@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FiMapPin, FiAperture, FiHeart, FiStar } from 'react-icons/fi'
+import PageHeader from '../components/PageHeader'
 import './About.css'
 
 function About() {
@@ -28,6 +29,7 @@ function About() {
 
   return (
     <div className={`about-page ${fadeIn ? 'fade-in' : ''}`}>
+      <PageHeader />
       {/* Hero Section */}
       <section className="about-hero">
         <motion.div 

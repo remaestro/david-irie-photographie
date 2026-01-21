@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PageHeader from '../components/PageHeader'
 import './Contact.css'
 import heroImage from '../assets/images/slide2.jpg'
 
@@ -251,6 +252,7 @@ function Contact() {
 
   return (
     <div className="contact-page">
+      <PageHeader />
       {/* Hero Section */}
       <section className="contact-hero" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImage})` }}>
         <div className="contact-hero-content">

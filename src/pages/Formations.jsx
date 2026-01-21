@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import PageHeader from '../components/PageHeader'
 import './Formations.css'
 import heroImage from '../assets/images/slide3.jpg'
 
@@ -61,6 +62,7 @@ function Formations() {
 
   return (
     <div className="formations-page">
+      <PageHeader />
       {/* Hero Section */}
       <section className="formations-hero" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImage})` }}>
         <div className="formations-hero-content">

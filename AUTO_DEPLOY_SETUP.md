@@ -23,7 +23,7 @@ Faire en sorte que chaque `git push` vers GitHub déclenche automatiquement un b
 
 6. **Clique "Connect"**
 
----
+---2
 
 ### Étape 2: Créer le Trigger
 
@@ -33,7 +33,7 @@ Faire en sorte que chaque `git push` vers GitHub déclenche automatiquement un b
    ```
    Nom: deploy-on-push
    Description: Auto-deploy on push to main
-   
+   les 
    Event: Push to a branch
    Source: remaestro/david-irie-photographie
    Branch: ^main$

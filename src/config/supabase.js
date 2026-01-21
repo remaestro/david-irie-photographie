@@ -360,3 +360,49 @@ export async function deleteCategory(categoryId) {
 
   if (error) throw error
 }
+
+// ============================================
+// PHOTOS DU SITE (Admin)
+// ============================================
+
+/**
+ * Récupérer toutes les photos du site
+ */
+export async function getSitePhotos() {
+  const { data, error } = await supabase
+    .from('site_photos')
+    .select('*')
+    .order('photo_key')
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Récupérer une photo du site par sa clé
+ */
+export async function getSitePhoto(photoKey) {
+  const { data, error } = await supabase
+    .from('site_photos')
+    .select('*')
+    .eq('photo_key', photoKey)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+/**
+ * Mettre à jour une photo du site
+ */
+export async function updateSitePhoto(photoKey, url) {
+  const { data, error } = await supabase
+    .from('site_photos')
+    .update({ url, updated_at: new Date().toISOString() })
+    .eq('photo_key', photoKey)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}

@@ -1,6 +1,7 @@
 import { StrictMode, lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter, Routes, Route } from 'react-router-dom'
+import { AdminProvider } from './contexts/AdminContext'
 import './index.css'
 import App from './App.jsx'
 
@@ -16,6 +17,8 @@ const ShootingExterieur = lazy(() => import('./pages/ShootingExterieur.jsx'))
 const ShootingStudio = lazy(() => import('./pages/ShootingStudio.jsx'))
 const Videos = lazy(() => import('./pages/Videos.jsx'))
 const PrivateGalleries = lazy(() => import('./pages/PrivateGalleries.jsx'))
+const AdminLogin = lazy(() => import('./pages/AdminLogin.jsx'))
+const AdminPhotoManager = lazy(() => import('./pages/AdminPhotoManager.jsx'))
 
 // Loading component
 const Loading = () => (
@@ -34,23 +37,27 @@ const Loading = () => (
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <HashRouter>
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/formations" element={<Formations />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/portfolio/mariage" element={<Mariage />} />
-          <Route path="/portfolio/couple" element={<Couple />} />
-          <Route path="/portfolio/evenements" element={<Evenements />} />
-          <Route path="/portfolio/strobist" element={<ShootingStrobist />} />
-          <Route path="/portfolio/exterieur" element={<ShootingExterieur />} />
-          <Route path="/portfolio/studio" element={<ShootingStudio />} />
-          <Route path="/videos" element={<Videos />} />
-          <Route path="/galeries-privees" element={<PrivateGalleries />} />
-        </Routes>
-      </Suspense>
-    </HashRouter>
+    <AdminProvider>
+      <HashRouter>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/formations" element={<Formations />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/portfolio/mariage" element={<Mariage />} />
+            <Route path="/portfolio/couple" element={<Couple />} />
+            <Route path="/portfolio/evenements" element={<Evenements />} />
+            <Route path="/portfolio/strobist" element={<ShootingStrobist />} />
+            <Route path="/portfolio/exterieur" element={<ShootingExterieur />} />
+            <Route path="/portfolio/studio" element={<ShootingStudio />} />
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/galeries-privees" element={<PrivateGalleries />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminPhotoManager />} />
+          </Routes>
+        </Suspense>
+      </HashRouter>
+    </AdminProvider>
   </StrictMode>,
 )

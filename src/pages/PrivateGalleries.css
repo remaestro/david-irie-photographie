@@ -3,6 +3,7 @@
   min-height: 100vh;
   background-color: #fafafa;
   position: relative;
+  padding-top: 70px; /* Space for fixed header */
 }
 
 /* Success Toast */
@@ -28,6 +29,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .galleries-hero-overlay {

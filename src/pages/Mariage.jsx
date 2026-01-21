@@ -3,12 +3,14 @@ import { motion } from 'framer-motion'
 import { FiCamera, FiVideo, FiHeart, FiBook } from 'react-icons/fi'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
+import PageHeader from '../components/PageHeader'
 import './Portfolio.css'
 
 function Mariage() {
   const [fadeIn, setFadeIn] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  
 
   useEffect(() => {
     setFadeIn(true)
@@ -37,6 +39,7 @@ function Mariage() {
 
   return (
     <div className={`portfolio-page ${fadeIn ? 'fade-in' : ''}`}>
+      <PageHeader />
       {/* Hero Section */}
       <section className="portfolio-hero">
         <div className="portfolio-hero-overlay">

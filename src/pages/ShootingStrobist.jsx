@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
+import PageHeader from '../components/PageHeader'
 import './Portfolio.css'
 
 function ShootingStrobist() {
@@ -12,6 +13,8 @@ function ShootingStrobist() {
   useEffect(() => {
     setFadeIn(true)
   }, [])
+
+  
 
   // Strobist photos - using existing images as placeholders
   const photos = [
@@ -34,6 +37,7 @@ function ShootingStrobist() {
 
   return (
     <div className={`portfolio-page ${fadeIn ? 'fade-in' : ''}`}>
+      <PageHeader />
       {/* Hero Section */}
       <section className="portfolio-hero" style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(' + import.meta.env.BASE_URL + 'images/slide4.jpg)' }}>
         <div className="portfolio-hero-overlay">
